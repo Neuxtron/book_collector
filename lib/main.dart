@@ -1,4 +1,5 @@
 import 'package:book_collector/utils/constants/app_colors.dart';
+import 'package:book_collector/views/favourites_page.dart';
 import 'package:book_collector/views/home_page/home_page.dart';
 import 'package:book_collector/views/login_page.dart';
 import 'package:book_collector/views/signup_page.dart';
@@ -21,7 +22,7 @@ class MyApp extends StatelessWidget {
           accentColor: AppColors.primary,
         ),
       ),
-      home: HomePage(),
+      home: const FavouritesPage(),
     );
   }
 }

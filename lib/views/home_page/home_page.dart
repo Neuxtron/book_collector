@@ -1,8 +1,8 @@
 import 'package:book_collector/models/book_model.dart';
 import 'package:book_collector/models/source/dummy_books.dart';
 import 'package:book_collector/utils/constants/app_colors.dart';
-import 'package:book_collector/views/widgets/book_list_item.dart';
 import 'package:book_collector/views/home_page/widgets/book_tile.dart';
+import 'package:book_collector/views/widgets/books_list_view.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatelessWidget {
@@ -160,20 +160,7 @@ class AllBooksListView extends StatelessWidget {
             ),
           ),
         ),
-        ListView.builder(
-          shrinkWrap: true,
-          physics: const NeverScrollableScrollPhysics(),
-          itemCount: booksList.length,
-          itemBuilder: (context, index) {
-            final book = booksList[index];
-            return BookListItem(
-              title: book.title,
-              author: book.author,
-              publishedDate: book.publishedDate,
-              image: book.image,
-            );
-          },
-        ),
+        BooksListView(booksList: booksList)
       ],
     );
   }
