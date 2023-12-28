@@ -1,0 +1,36 @@
+NOTES:
+  ☐ Use Getx for state management
+  ☐ Use Dio for api calls
+
+Slicing:
+  ☐ Login page 
+  ☐ Register page
+  ☐ Favourites page
+  
+  Homepage:
+    ☐ Horizontal listview for favourites
+    ☐ Horizontal listview for recents
+    ☐ Veritcal listview for all books
+
+Main Features:
+  ☐ Login
+  ☐ Register
+  ☐ Logout
+
+  ☐ Get all books
+  ☐ Create a book
+  ☐ Edit a book
+  ☐ Delete a book
+
+  ☐ Favourites
+  ☐ Recently Opened
+  ☐ Search
+
+Additional:
+  Slicing:
+    ☐ Profile Page
+    ☐ History Page
+  Features:
+    ☐ Pull to refresh
+    ☐ Delete account
+
