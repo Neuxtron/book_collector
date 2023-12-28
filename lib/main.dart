@@ -1,4 +1,5 @@
 import 'package:book_collector/views/login_page.dart';
+import 'package:book_collector/views/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -13,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+      home: SignupPage(),
     );
   }
 }

@@ -61,8 +61,9 @@ class FormContainer extends StatelessWidget {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(20),
                 ),
-                padding: const EdgeInsets.all(40),
-                margin: const EdgeInsets.symmetric(horizontal: 20),
+                padding:
+                    const EdgeInsets.symmetric(vertical: 40, horizontal: 30),
+                margin: const EdgeInsets.symmetric(horizontal: 15),
                 child: const Column(
                   children: [
                     Text(
@@ -103,7 +104,7 @@ class _LoginFormState extends State<LoginForm> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         FormTextInput(
           controller: _emailController,
           hintText: "Email",
@@ -111,16 +112,16 @@ class _LoginFormState extends State<LoginForm> {
         ),
         FormTextInput(
           controller: _passwordController,
-          hintText: "Password",
+          hintText: "Kata Sandi",
           isObscure: true,
         ),
-        SizedBox(height: 40),
+        const SizedBox(height: 40),
         LoginButton(
           onPressed: handleLogin,
           isLoading: _loading,
         ),
-        SizedBox(height: 15),
-        SignupButton(),
+        const SizedBox(height: 15),
+        const SignupButton(),
       ],
     );
   }
@@ -139,6 +140,7 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialButton(
+      minWidth: 200,
       onPressed: isLoading ? null : onPressed,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(7),
@@ -157,7 +159,7 @@ class SignupButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {},
-      child: Text(
+      child: const Text(
         "Buat akun baru",
         style: TextStyle(color: AppColors.primary),
       ),
