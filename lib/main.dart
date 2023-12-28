@@ -1,3 +1,5 @@
+import 'package:book_collector/utils/constants/app_colors.dart';
+import 'package:book_collector/views/home_page/home_page.dart';
 import 'package:book_collector/views/login_page.dart';
 import 'package:book_collector/views/signup_page.dart';
 import 'package:flutter/material.dart';
@@ -12,9 +14,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SignupPage(),
+      theme: ThemeData(
+        colorScheme: ColorScheme.fromSwatch(
+          accentColor: AppColors.primary,
+        ),
+      ),
+      home: HomePage(),
     );
   }
 }

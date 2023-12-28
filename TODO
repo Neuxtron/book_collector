@@ -12,9 +12,10 @@ Slicing:
   ☐ Profile Page
   
   Homepage:
-    ☐ Horizontal listview for favourites
-    ☐ Horizontal listview for recents
-    ☐ Veritcal listview for all books
+    ✔ Search bar & profile picture @done(23-12-28 23:31)
+    ✔ Horizontal listview for favourites @started(23-12-28 21:52) @done(23-12-28 22:26) @lasted(34m44s)
+    ✔ Horizontal listview for recents @started(23-12-28 22:02) @done(23-12-28 22:26) @lasted(24m45s)
+    ✔ Veritcal listview for all books @started(23-12-28 23:01) @done(23-12-28 23:30) @lasted(29m45s)
 
 Main Features:
   ☐ Login
