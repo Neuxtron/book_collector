@@ -6,6 +6,10 @@ Slicing:
   ✔ Login page @started(23-12-28 18:05) @done(23-12-28 20:55) @lasted(2h50m44s)
   ✔ Register page @started(23-12-28 20:55) @done(23-12-28 21:12) @lasted(17m31s)
   ☐ Favourites page
+  ☐ History page
+  ☐ Add page
+  ☐ Detail / Edit page
+  ☐ Profile Page
   
   Homepage:
     ☐ Horizontal listview for favourites
@@ -28,8 +32,7 @@ Main Features:
 
 Additional:
   Slicing:
-    ☐ Profile Page
-    ☐ History Page
+    
   Features:
     ☐ Pull to refresh
     ☐ Delete account
