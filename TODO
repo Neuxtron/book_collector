@@ -7,6 +7,9 @@ Slicing:
   ✔ Register page @started(23-12-28 20:55) @done(23-12-28 21:12) @lasted(17m31s)
   ✔ Favourites page @started(23-12-29 00:24) @done(23-12-29 00:43) @lasted(19m21s)
   ✔ History page @started(23-12-29 00:43) @done(23-12-29 00:47) @lasted(4m41s)
+
+  ☐ Bottomm navigation
+
   ☐ Add page
   ☐ Detail / Edit page
   ☐ Profile Page
@@ -18,23 +21,18 @@ Slicing:
     ✔ Veritcal listview for all books @started(23-12-28 23:01) @done(23-12-28 23:30) @lasted(29m45s)
 
 Main Features:
-  ☐ Login
-  ☐ Register
-  ☐ Logout
+  ☐ Login @critical
+  ☐ Register @critical
+  ☐ Logout @critical
 
-  ☐ Get all books
-  ☐ Create a book
-  ☐ Edit a book
-  ☐ Delete a book
+  ☐ Get all books @critical
+  ☐ Create a book @critical
+  ☐ Edit a book @critical
+  ☐ Delete a book @critical
 
-  ☐ Favourites
-  ☐ Recently Opened
-  ☐ Search
+  ☐ Favourites @high
+  ☐ Recently Opened @high
+  ☐ Search @high
 
-Additional:
-  Slicing:
-
-  Features:
-    ☐ Pull to refresh
-    ☐ Delete account
-
+  ☐ Pull to refresh @low
+  ☐ Delete account @low
