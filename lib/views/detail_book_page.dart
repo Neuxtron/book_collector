@@ -253,6 +253,7 @@ class _AddBookFormState extends State<AddBookForm> {
             keyboardType: TextInputType.name,
             readOnly: !widget.isEditing,
           ),
+          // TODO: use date picker
           InputItem(
             controller: widget.controllers["publishedDate"]!,
             labelText: "Tanggal Publikasi",
