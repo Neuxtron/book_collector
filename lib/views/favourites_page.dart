@@ -1,4 +1,5 @@
 import 'package:book_collector/models/source/dummy_books.dart';
+import 'package:book_collector/utils/constants/app_colors.dart';
 import 'package:book_collector/views/widgets/books_list_view.dart';
 import 'package:flutter/material.dart';
 
@@ -18,14 +19,14 @@ class FavouritesPage extends StatelessWidget {
                 children: [
                   Icon(
                     Icons.star,
-                    color: Colors.yellow.shade700.withOpacity(.7),
+                    color: AppColors.lightYelllow,
                   ),
                   SizedBox(width: 10),
                   Text(
                     "Buku Favorit",
                     style: TextStyle(
                       fontSize: 32,
-                      color: Colors.yellow.shade700.withOpacity(.7),
+                      color: AppColors.lightYelllow,
                       fontWeight: FontWeight.bold,
                     ),
                   ),

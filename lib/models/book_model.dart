@@ -1,5 +1,5 @@
 class BookModel {
-  final int id;
+  final int? id;
   final String isbn;
   final String title;
   final String author;
@@ -9,7 +9,7 @@ class BookModel {
   final String image;
 
   BookModel({
-    required this.id,
+    this.id,
     required this.isbn,
     required this.title,
     required this.author,

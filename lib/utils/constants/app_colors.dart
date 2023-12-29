@@ -5,4 +5,5 @@ class AppColors {
   static const inputBackground = aliceBlue;
 
   static const aliceBlue = Color(0x99DFEFFF);
+  static final lightYelllow = Colors.yellow.shade700.withOpacity(.7);
 }
