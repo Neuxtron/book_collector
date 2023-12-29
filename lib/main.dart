@@ -1,5 +1,6 @@
 import 'package:book_collector/utils/constants/app_colors.dart';
 import 'package:book_collector/views/add_book_page.dart';
+import 'package:book_collector/views/edit_profile.dart';
 import 'package:book_collector/views/login_page.dart';
 import 'package:book_collector/views/main_layout.dart';
 import 'package:book_collector/views/profile_page.dart';
@@ -29,6 +30,7 @@ class MyApp extends StatelessWidget {
         "/main": (context) => const MainLayout(),
         "/add_book": (context) => const AddBookPage(),
         "/profile": (context) => const ProfilePage(),
+        "/edit_profile": (context) => const EditProfilePage(),
       },
     );
   }

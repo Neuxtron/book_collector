@@ -18,7 +18,7 @@ class ProfilePage extends StatelessWidget {
             onPressed: () {
               Get.back();
             },
-            icon: Icon(Icons.arrow_back, color: AppColors.primary),
+            icon: const Icon(Icons.arrow_back, color: AppColors.primary),
           ),
         ),
         body: Padding(
@@ -28,31 +28,33 @@ class ProfilePage extends StatelessWidget {
               Container(
                 width: 130,
                 height: 130,
-                margin: EdgeInsets.only(top: 20, bottom: 10),
+                margin: const EdgeInsets.only(top: 20, bottom: 10),
                 decoration: BoxDecoration(
                     color: AppColors.primary.withOpacity(.3),
                     borderRadius: BorderRadius.circular(7),
                     border: Border.all(color: AppColors.primary)),
-                child: Center(
+                child: const Center(
                   child: Text("USERNAME"),
                 ),
               ),
               FormButton(
-                onPressed: () {},
+                onPressed: () {
+                  Get.toNamed("/edit_profile");
+                },
                 text: "Edit Profil",
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20, bottom: 100),
+              const Padding(
+                padding: EdgeInsets.only(top: 20, bottom: 100),
                 child: OutlinedFormTextInput(
                   labelText: "Email",
                   readOnly: true,
                 ),
               ),
-              GestureDetector(
-                onTap: () {
+              TextButton(
+                onPressed: () {
                   // TODO: logout
                 },
-                child: Text(
+                child: const Text(
                   "Logout Akun",
                   style: TextStyle(
                     color: Colors.red,
