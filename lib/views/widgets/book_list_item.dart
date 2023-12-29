@@ -1,24 +1,23 @@
+import 'package:book_collector/models/book_model.dart';
 import 'package:book_collector/utils/constants/app_colors.dart';
+import 'package:book_collector/views/detail_book_page.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class BookListItem extends StatelessWidget {
-  final String title;
-  final String author;
-  final DateTime publishedDate;
-  final String image;
+  final BookModel model;
 
   const BookListItem({
     super.key,
-    required this.title,
-    required this.author,
-    required this.publishedDate,
-    required this.image,
+    required this.model,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Get.to(DetailBookPage(bookModel: model));
+      },
       child: Container(
         decoration: BoxDecoration(
           color: AppColors.primary.withOpacity(.18),
@@ -31,7 +30,7 @@ class BookListItem extends StatelessWidget {
             ClipRRect(
               borderRadius: BorderRadius.circular(5),
               child: Image.network(
-                image,
+                model.image,
                 height: 100,
               ),
             ),
@@ -41,12 +40,12 @@ class BookListItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(title),
+                    Text(model.title),
                     const SizedBox(height: 10),
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Text(
-                        author,
+                        model.author,
                         style: const TextStyle(color: Colors.grey),
                       ),
                     ),

@@ -4,14 +4,15 @@ import 'package:book_collector/views/widgets/form_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class AddBookPage extends StatefulWidget {
-  const AddBookPage({super.key});
+class DetailBookPage extends StatefulWidget {
+  final BookModel bookModel;
+  const DetailBookPage({super.key, required this.bookModel});
 
   @override
-  State<AddBookPage> createState() => _AddBookPageState();
+  State<DetailBookPage> createState() => _DetailBookPageState();
 }
 
-class _AddBookPageState extends State<AddBookPage> {
+class _DetailBookPageState extends State<DetailBookPage> {
   final _descriptionController = TextEditingController();
   final _isbnController = TextEditingController();
   final _titleController = TextEditingController();
@@ -22,6 +23,7 @@ class _AddBookPageState extends State<AddBookPage> {
   final _imageController = TextEditingController();
 
   String _imgUrl = "";
+  bool _isEditing = false;
 
   Map<String, TextEditingController> get _controllers => {
         "description": _descriptionController,
@@ -33,6 +35,14 @@ class _AddBookPageState extends State<AddBookPage> {
         "pageCount": _pageCountController,
         "image": _imageController,
       };
+
+  void toggleFavourite(value) {
+    if (value) {
+      // TODO: save id in localstorage
+    } else {
+      // TODO: remove id from localstorage
+    }
+  }
 
   void onSubmit() {
     final formattedPublishedDate =
@@ -56,6 +66,24 @@ class _AddBookPageState extends State<AddBookPage> {
     setState(() => _imgUrl = url);
   }
 
+  void setControllerTexts() {
+    _isbnController.text = widget.bookModel.isbn;
+    _titleController.text = widget.bookModel.title;
+    _authorController.text = widget.bookModel.author;
+    _publishedDateController.text = widget.bookModel.publishedDate.toString();
+    _publisherController.text = widget.bookModel.publisher;
+    _pageCountController.text = widget.bookModel.pageCount.toString();
+    _imageController.text = widget.bookModel.image;
+
+    _imgUrl = _imageController.text;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    setControllerTexts();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -70,17 +98,23 @@ class _AddBookPageState extends State<AddBookPage> {
                 width: 100,
                 child: TextButton(
                   onPressed: () {
-                    Get.back();
+                    if (_isEditing) {
+                      setState(() => _isEditing = false);
+                    } else {
+                      Get.back();
+                    }
                   },
-                  child: const Text(
-                    "Kembali",
-                    style: TextStyle(color: AppColors.primary),
+                  child: Text(
+                    _isEditing ? "Batal" : "Kembali",
+                    style: const TextStyle(color: AppColors.primary),
                   ),
                 ),
               ),
               FormButton(
-                onPressed: onSubmit,
-                text: "Simpan",
+                onPressed: _isEditing
+                    ? onSubmit
+                    : () => setState(() => _isEditing = true),
+                text: _isEditing ? "Simpan" : "Edit",
                 minWidth: 100,
               ),
             ],
@@ -89,7 +123,7 @@ class _AddBookPageState extends State<AddBookPage> {
         body: SingleChildScrollView(
           child: Column(
             children: [
-              // PageHeadear(onChange: (value) => isFavourite = value),
+              PageHeader(onChange: toggleFavourite),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30),
                 child: _imgUrl == ""
@@ -119,8 +153,42 @@ class _AddBookPageState extends State<AddBookPage> {
               AddBookForm(
                 controllers: _controllers,
                 onImageChanged: onImageChanged,
+                isEditing: _isEditing,
               ),
             ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PageHeader extends StatefulWidget {
+  final Function(bool value) onChange;
+  const PageHeader({super.key, required this.onChange});
+
+  @override
+  State<PageHeader> createState() => _PageHeaderState();
+}
+
+class _PageHeaderState extends State<PageHeader> {
+  bool _isFavourite = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: Padding(
+        padding: const EdgeInsets.only(right: 20, left: 10),
+        child: IconButton(
+          onPressed: () {
+            setState(() => _isFavourite = !_isFavourite);
+            widget.onChange(_isFavourite);
+          },
+          iconSize: 40,
+          icon: Icon(
+            _isFavourite ? Icons.star_rounded : Icons.star_outline_rounded,
+            color: AppColors.lightYelllow,
           ),
         ),
       ),
@@ -131,11 +199,13 @@ class _AddBookPageState extends State<AddBookPage> {
 class AddBookForm extends StatefulWidget {
   final Map<String, TextEditingController> controllers;
   final Function(String url) onImageChanged;
+  final bool isEditing;
 
   const AddBookForm({
     super.key,
     required this.controllers,
     required this.onImageChanged,
+    required this.isEditing,
   });
 
   @override
@@ -153,6 +223,7 @@ class _AddBookFormState extends State<AddBookForm> {
             controller: widget.controllers["description"]!,
             maxLines: 4,
             cursorColor: AppColors.primary,
+            readOnly: !widget.isEditing,
             decoration: InputDecoration(
               fillColor: AppColors.primary.withAlpha(95),
               filled: true,
@@ -168,35 +239,42 @@ class _AddBookFormState extends State<AddBookForm> {
             controller: widget.controllers["isbn"]!,
             labelText: "ISBN",
             keyboardType: TextInputType.number,
+            readOnly: !widget.isEditing,
           ),
           InputItem(
             controller: widget.controllers["title"]!,
             labelText: "Judul Buku",
             keyboardType: TextInputType.name,
+            readOnly: !widget.isEditing,
           ),
           InputItem(
             controller: widget.controllers["author"]!,
             labelText: "Penulis",
             keyboardType: TextInputType.name,
+            readOnly: !widget.isEditing,
           ),
           InputItem(
             controller: widget.controllers["publishedDate"]!,
             labelText: "Tanggal Publikasi",
+            readOnly: !widget.isEditing,
           ),
           InputItem(
             controller: widget.controllers["publisher"]!,
             labelText: "Penerbit",
             keyboardType: TextInputType.name,
+            readOnly: !widget.isEditing,
           ),
           InputItem(
             controller: widget.controllers["pageCount"]!,
             labelText: "Jumlah Halaman",
             keyboardType: TextInputType.number,
+            readOnly: !widget.isEditing,
           ),
           InputItem(
             controller: widget.controllers["image"]!,
             labelText: "URL Gambar",
             onChanged: widget.onImageChanged,
+            readOnly: !widget.isEditing,
           ),
           const SizedBox(height: 10),
         ],
@@ -210,6 +288,7 @@ class InputItem extends StatelessWidget {
   final String labelText;
   final TextInputType? keyboardType;
   final Function(String value)? onChanged;
+  final bool readOnly;
 
   const InputItem({
     super.key,
@@ -217,6 +296,7 @@ class InputItem extends StatelessWidget {
     required this.labelText,
     this.keyboardType,
     this.onChanged,
+    this.readOnly = false,
   });
 
   @override
@@ -228,6 +308,7 @@ class InputItem extends StatelessWidget {
         cursorColor: AppColors.primary,
         keyboardType: keyboardType,
         onChanged: onChanged,
+        readOnly: readOnly,
         decoration: InputDecoration(
           labelText: labelText,
           floatingLabelStyle: const TextStyle(color: AppColors.primary),

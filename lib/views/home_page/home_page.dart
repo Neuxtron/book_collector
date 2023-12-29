@@ -135,8 +135,7 @@ class HorizontalBookListView extends StatelessWidget {
             itemBuilder: (context, index) {
               final book = booksList[index];
               return BookTile(
-                title: book.title,
-                image: book.image,
+                model: book,
               );
             },
           ),

@@ -16,10 +16,7 @@ class BooksListView extends StatelessWidget {
       itemBuilder: (context, index) {
         final book = booksList[index];
         return BookListItem(
-          title: book.title,
-          author: book.author,
-          publishedDate: book.publishedDate,
-          image: book.image,
+          model: book,
         );
       },
     );
