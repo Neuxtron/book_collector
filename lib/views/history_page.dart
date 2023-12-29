@@ -8,35 +8,33 @@ class HistoryPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Padding(
-                padding: const EdgeInsets.only(top: 40, left: 20, bottom: 20),
-                child: Row(
-                  children: [
-                    Icon(
-                      Icons.history_rounded,
-                      size: 30,
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(top: 40, left: 20, bottom: 20),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.history_rounded,
+                    size: 30,
+                    color: Colors.blueGrey.shade700.withOpacity(.5),
+                  ),
+                  SizedBox(width: 10),
+                  Text(
+                    "Riwayat",
+                    style: TextStyle(
+                      fontSize: 32,
                       color: Colors.blueGrey.shade700.withOpacity(.5),
+                      fontWeight: FontWeight.bold,
                     ),
-                    SizedBox(width: 10),
-                    Text(
-                      "Riwayat",
-                      style: TextStyle(
-                        fontSize: 32,
-                        color: Colors.blueGrey.shade700.withOpacity(.5),
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
               ),
-              BooksListView(booksList: DummyBooks.allBooks)
-            ],
-          ),
+            ),
+            BooksListView(booksList: DummyBooks.allBooks)
+          ],
         ),
       ),
     );
