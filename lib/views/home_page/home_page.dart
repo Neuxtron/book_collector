@@ -94,7 +94,10 @@ class ProfilePicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CircleAvatar();
+    return GestureDetector(
+      onTap: () => Get.toNamed("/profile"),
+      child: const CircleAvatar(),
+    );
   }
 }
 

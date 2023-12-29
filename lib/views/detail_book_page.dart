@@ -1,6 +1,7 @@
 import 'package:book_collector/models/book_model.dart';
 import 'package:book_collector/utils/constants/app_colors.dart';
 import 'package:book_collector/views/widgets/form_button.dart';
+import 'package:book_collector/views/widgets/outlined_form_text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -235,43 +236,43 @@ class _AddBookFormState extends State<AddBookForm> {
             ),
           ),
           const SizedBox(height: 30),
-          InputItem(
+          OutlinedFormTextInput(
             controller: widget.controllers["isbn"]!,
             labelText: "ISBN",
             keyboardType: TextInputType.number,
             readOnly: !widget.isEditing,
           ),
-          InputItem(
+          OutlinedFormTextInput(
             controller: widget.controllers["title"]!,
             labelText: "Judul Buku",
             keyboardType: TextInputType.name,
             readOnly: !widget.isEditing,
           ),
-          InputItem(
+          OutlinedFormTextInput(
             controller: widget.controllers["author"]!,
             labelText: "Penulis",
             keyboardType: TextInputType.name,
             readOnly: !widget.isEditing,
           ),
           // TODO: use date picker
-          InputItem(
+          OutlinedFormTextInput(
             controller: widget.controllers["publishedDate"]!,
             labelText: "Tanggal Publikasi",
             readOnly: !widget.isEditing,
           ),
-          InputItem(
+          OutlinedFormTextInput(
             controller: widget.controllers["publisher"]!,
             labelText: "Penerbit",
             keyboardType: TextInputType.name,
             readOnly: !widget.isEditing,
           ),
-          InputItem(
+          OutlinedFormTextInput(
             controller: widget.controllers["pageCount"]!,
             labelText: "Jumlah Halaman",
             keyboardType: TextInputType.number,
             readOnly: !widget.isEditing,
           ),
-          InputItem(
+          OutlinedFormTextInput(
             controller: widget.controllers["image"]!,
             labelText: "URL Gambar",
             onChanged: widget.onImageChanged,
@@ -280,50 +281,6 @@ class _AddBookFormState extends State<AddBookForm> {
           const SizedBox(height: 10),
         ],
       ),
-    );
-  }
-}
-
-class InputItem extends StatelessWidget {
-  final TextEditingController controller;
-  final String labelText;
-  final TextInputType? keyboardType;
-  final Function(String value)? onChanged;
-  final bool readOnly;
-
-  const InputItem({
-    super.key,
-    required this.controller,
-    required this.labelText,
-    this.keyboardType,
-    this.onChanged,
-    this.readOnly = false,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
-      child: TextField(
-        controller: controller,
-        cursorColor: AppColors.primary,
-        keyboardType: keyboardType,
-        onChanged: onChanged,
-        readOnly: readOnly,
-        decoration: InputDecoration(
-          labelText: labelText,
-          floatingLabelStyle: const TextStyle(color: AppColors.primary),
-          enabledBorder: buildBorder(),
-          focusedBorder: buildBorder(),
-        ),
-      ),
-    );
-  }
-
-  InputBorder buildBorder() {
-    return OutlineInputBorder(
-      borderSide: const BorderSide(color: AppColors.primary),
-      borderRadius: BorderRadius.circular(7),
     );
   }
 }
