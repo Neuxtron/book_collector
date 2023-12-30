@@ -1,3 +1,3 @@
 class PrefKeys {
-  static const userEmail = "USEREMAIL";
+  static const userToken = "USERTOKEN";
 }

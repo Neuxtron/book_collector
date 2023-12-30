@@ -13,7 +13,7 @@ class ProfilePage extends StatelessWidget {
   void handleLogout(UserController controller) async {
     final prefs = await SharedPreferences.getInstance();
     controller.logout();
-    prefs.setString(PrefKeys.userEmail, "");
+    prefs.setString(PrefKeys.userToken, "");
     Get.offAllNamed("/login");
   }
 

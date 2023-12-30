@@ -1,3 +1,4 @@
+import 'package:book_collector/models/utils/constants/dio_api.dart';
 import 'package:book_collector/utils/constants/pref_keys.dart';
 import 'package:book_collector/views/login_page.dart';
 import 'package:book_collector/views/main_layout.dart';
@@ -12,15 +13,17 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-  String? _userEmail;
+  String? _userToken;
   bool _loading = true;
 
   void getSavedUser() async {
     final prefs = await SharedPreferences.getInstance();
-    final userEmail = prefs.getString(PrefKeys.userEmail) ?? "";
+    final userToken = prefs.getString(PrefKeys.userToken) ?? "";
+    DioApi.token = userToken;
+
     setState(() {
       _loading = false;
-      _userEmail = userEmail;
+      _userToken = userToken;
     });
   }
 
@@ -33,7 +36,7 @@ class _AuthPageState extends State<AuthPage> {
   @override
   Widget build(BuildContext context) {
     if (_loading) return const Scaffold();
-    if (_userEmail != null && _userEmail != "") return const MainLayout();
+    if (_userToken != null && _userToken != "") return const MainLayout();
     return const LoginPage();
   }
 }

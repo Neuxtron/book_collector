@@ -126,7 +126,7 @@ class _SignupFormState extends State<SignupForm> {
 
     try {
       await controller.signup(name, email, password);
-      Get.offNamed("/main");
+      Get.offNamed("/login");
     } on SocketException catch (_) {
       setState(() => _error = "Gagal terhubung ke server");
     } on BadRequestException catch (_) {

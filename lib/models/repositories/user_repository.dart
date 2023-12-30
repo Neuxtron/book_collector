@@ -14,8 +14,9 @@ class UserRepository {
       final response = await _userService.getLoginResponse(email, password);
       final prefs = await SharedPreferences.getInstance();
 
-      DioApi.token = response["token"];
-      prefs.setString(PrefKeys.userEmail, email);
+      final token = response["token"];
+      DioApi.token = token;
+      prefs.setString(PrefKeys.userToken, token);
     } on SocketException catch (e) {
       log(e.message);
       final message =
@@ -29,9 +30,6 @@ class UserRepository {
   Future signup(String name, String email, String password) async {
     try {
       await _userService.getSignupResponse(name, email, password);
-
-      final prefs = await SharedPreferences.getInstance();
-      prefs.setString(PrefKeys.userEmail, email);
     } on SocketException catch (e) {
       log(e.message);
       final message =
