@@ -12,3 +12,7 @@ class AppException implements Exception {
 class ServerException extends AppException {
   ServerException(super.message);
 }
+
+class BadRequestException extends AppException {
+  BadRequestException(super.message);
+}

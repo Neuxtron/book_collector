@@ -8,6 +8,8 @@ class ApiHelper {
     switch (statusCode) {
       case 401:
         throw UnauthorizedException();
+      case 422:
+        throw BadRequestException(message);
       case 500:
         throw ServerException(message);
       default:

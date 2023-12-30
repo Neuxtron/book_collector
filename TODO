@@ -23,7 +23,7 @@ Slicing:
 
 Main Features:
   ✔ Login @critical @started(23-12-30 04:47) @done(23-12-30 08:32) @lasted(3h45m26s)
-  ☐ Register @critical
+  ✔ Register @critical @started(23-12-30 08:37) @done(23-12-30 08:56) @lasted(19m31s)
   ☐ Logout @critical
 
   ☐ Get all books @critical

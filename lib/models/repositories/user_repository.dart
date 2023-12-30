@@ -20,4 +20,17 @@ class UserRepository {
       rethrow;
     }
   }
+
+  Future signup(String name, String email, String password) async {
+    try {
+      await _userService.getSignupResponse(name, email, password);
+    } on SocketException catch (e) {
+      log(e.message);
+      final message =
+          "Failed to connect to server: ${_userService.dio.options.baseUrl}";
+      throw SocketException(message);
+    } catch (_) {
+      rethrow;
+    }
+  }
 }

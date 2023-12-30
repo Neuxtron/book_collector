@@ -18,6 +18,20 @@ class UserController extends GetxController {
       rethrow;
     }
   }
+
+  Future signup(String name, String email, String password) async {
+    try {
+      userStatus = UserStatus.loading;
+      update();
+      await _userRepository.signup(name, email, password);
+      userStatus = UserStatus.normal;
+      update();
+    } catch (_) {
+      userStatus = UserStatus.normal;
+      update();
+      rethrow;
+    }
+  }
 }
 
 enum UserStatus { normal, loading }

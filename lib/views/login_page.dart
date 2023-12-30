@@ -104,6 +104,7 @@ class _LoginFormState extends State<LoginForm> {
   String _error = "";
 
   void handleLogin() async {
+    setState(() => _error = "");
     final email = _emailController.text.trim();
     final password = _passwordController.text;
 
@@ -124,10 +125,10 @@ class _LoginFormState extends State<LoginForm> {
     return Column(
       children: [
         Padding(
-          padding: EdgeInsets.symmetric(vertical: 20),
+          padding: const EdgeInsets.symmetric(vertical: 20),
           child: Text(
             _error,
-            style: TextStyle(color: Colors.red),
+            style: const TextStyle(color: Colors.red),
           ),
         ),
         FormTextInput(

@@ -1,4 +1,9 @@
+import 'dart:io';
+
+import 'package:book_collector/controllers/login_controller.dart';
+import 'package:book_collector/models/utils/constants/app_exceptions.dart';
 import 'package:book_collector/utils/constants/app_colors.dart';
+import 'package:book_collector/views/widgets/form_button.dart';
 import 'package:book_collector/views/widgets/form_text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -93,23 +98,55 @@ class SignupForm extends StatefulWidget {
 }
 
 class _SignupFormState extends State<SignupForm> {
+  UserController controller = Get.find();
+
   final _emailController = TextEditingController();
   final _nameController = TextEditingController();
   final _passwordController = TextEditingController();
   final _rPasswordController = TextEditingController();
-  bool _loading = false;
 
-  void handleSignup() {
-    // TODO: handle signup
-    print(_emailController.text);
-    print(_passwordController.text);
+  bool get _loading => controller.userStatus == UserStatus.loading;
+  String _error = "";
+
+  void handleSignup() async {
+    setState(() => _error = "");
+    final name = _emailController.text.trim();
+    final email = _emailController.text.trim();
+    final password = _passwordController.text;
+    final rPassword = _rPasswordController.text;
+
+    if (password.length < 8) {
+      setState(() => _error = "Kata sandi minimal 8 karakter");
+      return;
+    }
+    if (password != rPassword) {
+      setState(() => _error = "Kedua kata sandi tidak sama");
+      return;
+    }
+
+    try {
+      await controller.signup(name, email, password);
+      Get.offNamed("/main");
+    } on SocketException catch (_) {
+      setState(() => _error = "Gagal terhubung ke server");
+    } on BadRequestException catch (_) {
+      setState(() => _error = "Email sudah terdaftar");
+    } catch (_) {
+      setState(() => _error = "Terjadi kesalahan, silahkan coba lagi");
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(height: 30),
+        Padding(
+          padding: const EdgeInsets.symmetric(vertical: 20),
+          child: Text(
+            _error,
+            style: const TextStyle(color: Colors.red),
+          ),
+        ),
         FormTextInput(
           controller: _nameController,
           hintText: "Nama Lengkap",
@@ -130,39 +167,18 @@ class _SignupFormState extends State<SignupForm> {
           hintText: "Ulangi Kata Sandi",
           isObscure: true,
         ),
-        SizedBox(height: 40),
-        SignupButton(
-          onPressed: handleSignup,
-          isLoading: _loading,
-        ),
-        SizedBox(height: 15),
-        LoginButton(),
+        const SizedBox(height: 40),
+        GetBuilder<UserController>(builder: (_) {
+          return FormButton(
+            onPressed: handleSignup,
+            isLoading: _loading,
+            text: "Daftar",
+            minWidth: 200,
+          );
+        }),
+        const SizedBox(height: 15),
+        const LoginButton(),
       ],
-    );
-  }
-}
-
-class SignupButton extends StatelessWidget {
-  final Function() onPressed;
-  final bool isLoading;
-
-  const SignupButton({
-    super.key,
-    required this.onPressed,
-    required this.isLoading,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialButton(
-      minWidth: 200,
-      onPressed: isLoading ? null : onPressed,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(7),
-      ),
-      color: AppColors.primary,
-      textColor: Colors.white,
-      child: const Text("Daftar"),
     );
   }
 }
@@ -176,7 +192,7 @@ class LoginButton extends StatelessWidget {
       onTap: () {
         Get.offNamed("/login");
       },
-      child: Text(
+      child: const Text(
         "Sudah punya akun",
         style: TextStyle(color: AppColors.primary),
       ),
