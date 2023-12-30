@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:book_collector/controllers/login_controller.dart';
+import 'package:book_collector/controllers/user_controller.dart';
 import 'package:book_collector/models/utils/constants/app_exceptions.dart';
 import 'package:book_collector/utils/constants/app_colors.dart';
 import 'package:book_collector/views/widgets/form_button.dart';
