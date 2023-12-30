@@ -28,7 +28,7 @@ class FormButton extends StatelessWidget {
       textColor: Colors.white,
       child: !isLoading
           ? Text(text)
-          : SizedBox(
+          : const SizedBox(
               height: 20,
               width: 20,
               child: CircularProgressIndicator(

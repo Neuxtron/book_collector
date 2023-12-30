@@ -18,6 +18,7 @@ class _DetailBookPageState extends State<DetailBookPage> {
   final _descriptionController = TextEditingController();
   final _isbnController = TextEditingController();
   final _titleController = TextEditingController();
+  final _seriesController = TextEditingController();
   final _authorController = TextEditingController();
   final _publishedDateController = TextEditingController();
   final _publisherController = TextEditingController();
@@ -31,6 +32,7 @@ class _DetailBookPageState extends State<DetailBookPage> {
         "description": _descriptionController,
         "isbn": _isbnController,
         "title": _titleController,
+        "series": _seriesController,
         "author": _authorController,
         "publishedDate": _publishedDateController,
         "publisher": _publisherController,
@@ -53,6 +55,7 @@ class _DetailBookPageState extends State<DetailBookPage> {
     final bookModel = BookModel(
       isbn: _isbnController.text,
       title: _titleController.text,
+      series: _seriesController.text,
       author: _authorController.text,
       publishedDate: formattedPublishedDate,
       publisher: _publisherController.text,
@@ -270,6 +273,7 @@ class _AddBookFormState extends State<AddBookForm> {
             keyboardType: TextInputType.name,
             readOnly: !widget.isEditing,
           ),
+          // TODO: add series
           OutlinedFormTextInput(
             controller: widget.controllers["author"]!,
             labelText: "Penulis",

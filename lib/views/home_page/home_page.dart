@@ -12,18 +12,20 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    BookController controller = Get.find();
+
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.toNamed("/add_book");
+          Get.toNamed("/add_book")?.then((value) => controller.fetchAllBooks());
         },
         child: const Icon(Icons.add_rounded),
       ),
-      body: const SingleChildScrollView(
+      body: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
+            const Padding(
               padding: EdgeInsets.all(20),
               child: Row(
                 children: [
@@ -33,7 +35,7 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            PageBody(),
+            PageBody(bookController: controller),
           ],
         ),
       ),
@@ -42,18 +44,18 @@ class HomePage extends StatelessWidget {
 }
 
 class PageBody extends StatelessWidget {
-  const PageBody({super.key});
+  final BookController bookController;
+  const PageBody({super.key, required this.bookController});
 
   @override
   Widget build(BuildContext context) {
-    BookController controller = Get.find();
-
+    bookController.fetchAllBooks();
     return GetBuilder<BookController>(builder: (_) {
-      final bookStatus = controller.bookStatus;
+      final bookStatus = bookController.bookStatus;
 
       if (bookStatus == BookStatus.loading) return const LoadingBuilder();
-      if (bookStatus == BookStatus.failed) {
-        return ErrorBuilder(tryAgain: controller.fetchAllBooks);
+      if (bookStatus == BookStatus.failed && bookController.booksList.isEmpty) {
+        return ErrorBuilder(tryAgain: bookController.fetchAllBooks);
       }
 
       return Obx(() => Column(
@@ -65,7 +67,7 @@ class PageBody extends StatelessWidget {
               //   margin: const EdgeInsets.only(top: 20),
               //   child: HorizontalBookListView(
               //     title: "Favorit",
-              //     booksList: controller.booksList,
+              //     booksList: bookController.booksList,
               //   ),
               // ),
               // TODO: recents list
@@ -73,11 +75,11 @@ class PageBody extends StatelessWidget {
               //   padding: const EdgeInsets.only(top: 20),
               //   child: HorizontalBookListView(
               //     title: "Terakhir Dilihat",
-              //     booksList: controller.booksList,
+              //     booksList: bookController.booksList,
               //   ),
               // ),
               // const SizedBox(height: 50),
-              AllBooksListView(booksList: controller.booksList),
+              AllBooksListView(booksList: bookController.booksList),
             ],
           ));
     });

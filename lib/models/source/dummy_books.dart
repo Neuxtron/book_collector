@@ -5,6 +5,7 @@ class DummyBooks {
     id: 1,
     isbn: "9780747532699",
     title: "Harry Potter and the Philosopher's Stone",
+    series: "Harry Potter",
     author: "J. K. Rowling",
     publishedDate: DateTime(1997, 6, 26),
     publisher: "Bloomsbury",

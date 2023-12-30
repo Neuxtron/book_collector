@@ -2,6 +2,7 @@ class BookModel {
   final int? id;
   final String isbn;
   final String title;
+  final String series;
   final String author;
   final DateTime publishedDate;
   final String publisher;
@@ -13,6 +14,7 @@ class BookModel {
     this.id,
     required this.isbn,
     required this.title,
+    required this.series,
     required this.author,
     required this.publishedDate,
     required this.publisher,
@@ -25,12 +27,13 @@ class BookModel {
     return BookModel(
       isbn: json["isbn"],
       title: json["title"],
+      series: json["subtitle"],
       author: json["author"],
       publishedDate: DateTime.parse(json["published"]),
       publisher: json["publisher"],
       pageCount: json["pages"],
-      image: json["website"],
-      description: json["description"],
+      image: json["website"] ?? "",
+      description: json["description"] ?? "",
     );
   }
 }

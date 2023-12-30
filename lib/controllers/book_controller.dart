@@ -21,10 +21,22 @@ class BookController extends GetxController {
 
   Future fetchAllBooks() async {
     try {
-      _bookStatus = BookStatus.loading;
-      update();
       final booksList = await _bookRepository.fetchAllBooks();
       _booksList.assignAll(booksList);
+      _bookStatus = BookStatus.normal;
+      update();
+    } catch (_) {
+      _bookStatus = BookStatus.failed;
+      update();
+      rethrow;
+    }
+  }
+
+  Future createBook(BookModel model) async {
+    try {
+      _bookStatus = BookStatus.loading;
+      update();
+      await _bookRepository.createBook(model);
       _bookStatus = BookStatus.normal;
       update();
     } catch (_) {

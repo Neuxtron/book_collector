@@ -9,6 +9,7 @@ class OutlinedFormTextInput extends StatelessWidget {
   final Function(String value)? onChanged;
   final bool readOnly;
   final Function()? onTap;
+  final bool required;
 
   const OutlinedFormTextInput({
     super.key,
@@ -18,24 +19,33 @@ class OutlinedFormTextInput extends StatelessWidget {
     this.onChanged,
     this.readOnly = false,
     this.onTap,
+    this.required = true,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 10),
-      child: TextField(
+      child: TextFormField(
         controller: controller,
         cursorColor: AppColors.primary,
         keyboardType: keyboardType,
         onChanged: onChanged,
         readOnly: readOnly,
         onTap: onTap,
+        validator: (value) {
+          if (required && (value == null || value.isEmpty)) {
+            return "Isian tidak boleh kosong";
+          }
+          return null;
+        },
         decoration: InputDecoration(
           labelText: labelText,
           floatingLabelStyle: const TextStyle(color: AppColors.primary),
           enabledBorder: buildBorder(),
           focusedBorder: buildBorder(),
+          errorBorder: buildBorder(),
+          focusedErrorBorder: buildBorder(),
         ),
       ),
     );

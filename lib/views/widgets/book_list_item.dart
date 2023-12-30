@@ -23,6 +23,7 @@ class BookListItem extends StatelessWidget {
         Get.to(DetailBookPage(bookModel: model));
       },
       child: Container(
+        height: 130,
         decoration: BoxDecoration(
           color: AppColors.primary.withOpacity(.18),
           borderRadius: BorderRadius.circular(10),
@@ -36,12 +37,35 @@ class BookListItem extends StatelessWidget {
               child: Image.network(
                 model.image,
                 height: 100,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    width: 70,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary.withAlpha(95),
+                      borderRadius: BorderRadius.circular(7),
+                    ),
+                    padding: const EdgeInsets.all(5),
+                    child: Center(
+                      child: Text(
+                        model.title,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        textAlign: TextAlign.center,
+                        style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 12,
+                        ),
+                      ),
+                    ),
+                  );
+                },
               ),
             ),
             Expanded(
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 20),
                 child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(model.title),
