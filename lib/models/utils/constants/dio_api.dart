@@ -19,7 +19,7 @@ class DioApi {
 
   static set token(String token) {
     _dio.options.headers = {
-      "Authorization": token,
+      "Authorization": "Bearer $token",
     };
   }
 }
