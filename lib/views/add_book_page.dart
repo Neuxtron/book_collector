@@ -58,38 +58,37 @@ class _AddBookPageState extends State<AddBookPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        bottomNavigationBar: Container(
-          color: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: 100,
-                child: TextButton(
-                  onPressed: () {
-                    Get.back();
-                  },
-                  child: const Text(
-                    "Kembali",
-                    style: TextStyle(color: AppColors.primary),
-                  ),
+    return Scaffold(
+      bottomNavigationBar: Container(
+        color: Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: 100,
+              child: TextButton(
+                onPressed: () {
+                  Get.back();
+                },
+                child: const Text(
+                  "Kembali",
+                  style: TextStyle(color: AppColors.primary),
                 ),
               ),
-              FormButton(
-                onPressed: onSubmit,
-                text: "Simpan",
-                minWidth: 100,
-              ),
-            ],
-          ),
+            ),
+            FormButton(
+              onPressed: onSubmit,
+              text: "Simpan",
+              minWidth: 100,
+            ),
+          ],
         ),
-        body: SingleChildScrollView(
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Column(
             children: [
-              // PageHeadear(onChange: (value) => isFavourite = value),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30),
                 child: _imgUrl == ""

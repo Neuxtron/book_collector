@@ -11,48 +11,46 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        floatingActionButton: FloatingActionButton(
-          onPressed: () {
-            Get.toNamed("/add_book");
-          },
-          child: const Icon(Icons.add_rounded),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Padding(
-                padding: EdgeInsets.all(20),
-                child: Row(
-                  children: [
-                    SearchBooks(),
-                    SizedBox(width: 20),
-                    ProfilePicture(),
-                  ],
-                ),
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Get.toNamed("/add_book");
+        },
+        child: const Icon(Icons.add_rounded),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding: EdgeInsets.all(20),
+              child: Row(
+                children: [
+                  SearchBooks(),
+                  SizedBox(width: 20),
+                  ProfilePicture(),
+                ],
               ),
-              Container(
-                color: AppColors.primary.withOpacity(.12),
-                padding: const EdgeInsets.symmetric(vertical: 20),
-                margin: const EdgeInsets.only(top: 20),
-                child: HorizontalBookListView(
-                  title: "Favorit",
-                  booksList: DummyBooks.allBooks,
-                ),
+            ),
+            Container(
+              color: AppColors.primary.withOpacity(.12),
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              margin: const EdgeInsets.only(top: 20),
+              child: HorizontalBookListView(
+                title: "Favorit",
+                booksList: DummyBooks.allBooks,
               ),
-              Padding(
-                padding: const EdgeInsets.only(top: 20),
-                child: HorizontalBookListView(
-                  title: "Terakhir Dilihat",
-                  booksList: DummyBooks.allBooks,
-                ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(top: 20),
+              child: HorizontalBookListView(
+                title: "Terakhir Dilihat",
+                booksList: DummyBooks.allBooks,
               ),
-              const SizedBox(height: 50),
-              AllBooksListView(booksList: DummyBooks.allBooks),
-            ],
-          ),
+            ),
+            const SizedBox(height: 50),
+            AllBooksListView(booksList: DummyBooks.allBooks),
+          ],
         ),
       ),
     );

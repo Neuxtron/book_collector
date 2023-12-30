@@ -87,41 +87,41 @@ class _DetailBookPageState extends State<DetailBookPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        bottomNavigationBar: Container(
-          color: Colors.white,
-          padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              SizedBox(
-                width: 100,
-                child: TextButton(
-                  onPressed: () {
-                    if (_isEditing) {
-                      setState(() => _isEditing = false);
-                    } else {
-                      Get.back();
-                    }
-                  },
-                  child: Text(
-                    _isEditing ? "Batal" : "Kembali",
-                    style: const TextStyle(color: AppColors.primary),
-                  ),
+    return Scaffold(
+      bottomNavigationBar: Container(
+        color: Colors.white,
+        padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 20),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            SizedBox(
+              width: 100,
+              child: TextButton(
+                onPressed: () {
+                  if (_isEditing) {
+                    setState(() => _isEditing = false);
+                  } else {
+                    Get.back();
+                  }
+                },
+                child: Text(
+                  _isEditing ? "Batal" : "Kembali",
+                  style: const TextStyle(color: AppColors.primary),
                 ),
               ),
-              FormButton(
-                onPressed: _isEditing
-                    ? onSubmit
-                    : () => setState(() => _isEditing = true),
-                text: _isEditing ? "Simpan" : "Edit",
-                minWidth: 100,
-              ),
-            ],
-          ),
+            ),
+            FormButton(
+              onPressed: _isEditing
+                  ? onSubmit
+                  : () => setState(() => _isEditing = true),
+              text: _isEditing ? "Simpan" : "Edit",
+              minWidth: 100,
+            ),
+          ],
         ),
-        body: SingleChildScrollView(
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Column(
             children: [
               PageHeader(onChange: toggleFavourite),
