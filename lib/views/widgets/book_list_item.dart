@@ -3,6 +3,7 @@ import 'package:book_collector/utils/constants/app_colors.dart';
 import 'package:book_collector/views/detail_book_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 
 class BookListItem extends StatelessWidget {
   final BookModel model;
@@ -14,6 +15,9 @@ class BookListItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final formattedPublishedDate =
+        DateFormat('dd MMM yyyy').format(model.publishedDate);
+
     return InkWell(
       onTap: () {
         Get.to(DetailBookPage(bookModel: model));
@@ -45,7 +49,7 @@ class BookListItem extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(top: 10),
                       child: Text(
-                        model.author,
+                        "${model.author} • $formattedPublishedDate",
                         style: const TextStyle(color: Colors.grey),
                       ),
                     ),
