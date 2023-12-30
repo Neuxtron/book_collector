@@ -1,6 +1,7 @@
 import 'package:book_collector/utils/constants/app_colors.dart';
 import 'package:book_collector/utils/helpers/init_dependencies.dart';
 import 'package:book_collector/views/add_book_page.dart';
+import 'package:book_collector/views/auth_page.dart';
 import 'package:book_collector/views/edit_profile.dart';
 import 'package:book_collector/views/login_page.dart';
 import 'package:book_collector/views/main_layout.dart';
@@ -26,8 +27,9 @@ class MyApp extends StatelessWidget {
         ),
       ),
       initialBinding: InitDep(),
-      initialRoute: "/login",
+      initialRoute: "/",
       routes: {
+        "/": (context) => const AuthPage(),
         "/login": (context) => const LoginPage(),
         "/register": (context) => const SignupPage(),
         "/main": (context) => const MainLayout(),

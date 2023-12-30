@@ -24,8 +24,8 @@ Slicing:
 Main Features:
   ✔ Login @critical @started(23-12-30 04:47) @done(23-12-30 08:32) @lasted(3h45m26s)
   ✔ Register @critical @started(23-12-30 08:37) @done(23-12-30 08:56) @lasted(19m31s)
-  ✔ Logout @critical @done(23-12-30 10:36)
-  ✔ Auth detection @critical @done(23-12-30 10:36)
+  ✔ Logout @critical @done(23-12-30 10:34)
+  ✔ Auth detection @critical @done(23-12-30 10:34)
 
   ☐ Get all books @critical
   ☐ Create a book @critical
