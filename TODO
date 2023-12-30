@@ -27,7 +27,7 @@ Main Features:
   ✔ Logout @critical @done(23-12-30 10:34)
   ✔ Auth detection @critical @done(23-12-30 10:34)
 
-  ☐ Get all books @critical
+  ✔ Get all books @critical @started(23-12-30 11:16) @done(23-12-30 12:50) @lasted(1h34m28s)
   ☐ Create a book @critical
   ☐ Edit a book @critical
   ☐ Delete a book @critical

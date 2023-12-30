@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 
 class DioApi {
   static final _dio = Dio();
+  static String _token = "";
 
   static Dio get dio {
     final options = BaseOptions(
@@ -9,6 +10,7 @@ class DioApi {
       contentType: "application/json",
       headers: {
         "Accept": "application/json",
+        "Authorization": "Bearer $_token",
       },
       followRedirects: false,
       validateStatus: (status) => status! < 500,
@@ -17,9 +19,5 @@ class DioApi {
     return _dio;
   }
 
-  static set token(String token) {
-    _dio.options.headers = {
-      "Authorization": "Bearer $token",
-    };
-  }
+  static set token(String token) => _token = token;
 }

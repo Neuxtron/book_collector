@@ -7,6 +7,7 @@ class BookModel {
   final String publisher;
   final int pageCount;
   final String image;
+  final String description;
 
   BookModel({
     this.id,
@@ -17,5 +18,19 @@ class BookModel {
     required this.publisher,
     required this.pageCount,
     required this.image,
+    required this.description,
   });
+
+  factory BookModel.fromJson(Map<String, dynamic> json) {
+    return BookModel(
+      isbn: json["isbn"],
+      title: json["title"],
+      author: json["author"],
+      publishedDate: DateTime.parse(json["published"]),
+      publisher: json["publisher"],
+      pageCount: json["pages"],
+      image: json["website"],
+      description: json["description"],
+    );
+  }
 }

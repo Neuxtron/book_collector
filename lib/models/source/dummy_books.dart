@@ -11,6 +11,7 @@ class DummyBooks {
     pageCount: 223,
     image:
         "https://m.media-amazon.com/images/I/81Fyh2mrw4L._AC_UF1000,1000_QL80_.jpg",
+    description: "",
   );
 
   static final allBooks = [

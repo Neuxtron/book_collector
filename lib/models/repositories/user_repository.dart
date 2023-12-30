@@ -15,6 +15,7 @@ class UserRepository {
       final prefs = await SharedPreferences.getInstance();
 
       final token = response["token"];
+      log(token); // TODO: remove
       DioApi.token = token;
       prefs.setString(PrefKeys.userToken, token);
     } on SocketException catch (e) {

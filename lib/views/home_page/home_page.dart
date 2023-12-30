@@ -1,8 +1,9 @@
+import 'package:book_collector/controllers/book_controller.dart';
 import 'package:book_collector/models/book_model.dart';
-import 'package:book_collector/models/source/dummy_books.dart';
 import 'package:book_collector/utils/constants/app_colors.dart';
 import 'package:book_collector/views/home_page/widgets/book_tile.dart';
 import 'package:book_collector/views/widgets/books_list_view.dart';
+import 'package:book_collector/views/widgets/form_button.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -18,11 +19,11 @@ class HomePage extends StatelessWidget {
         },
         child: const Icon(Icons.add_rounded),
       ),
-      body: SingleChildScrollView(
+      body: const SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
+            Padding(
               padding: EdgeInsets.all(20),
               child: Row(
                 children: [
@@ -32,26 +33,92 @@ class HomePage extends StatelessWidget {
                 ],
               ),
             ),
-            Container(
-              color: AppColors.primary.withOpacity(.12),
-              padding: const EdgeInsets.symmetric(vertical: 20),
-              margin: const EdgeInsets.only(top: 20),
-              child: HorizontalBookListView(
-                title: "Favorit",
-                booksList: DummyBooks.allBooks,
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 20),
-              child: HorizontalBookListView(
-                title: "Terakhir Dilihat",
-                booksList: DummyBooks.allBooks,
-              ),
-            ),
-            const SizedBox(height: 50),
-            AllBooksListView(booksList: DummyBooks.allBooks),
+            PageBody(),
           ],
         ),
+      ),
+    );
+  }
+}
+
+class PageBody extends StatelessWidget {
+  const PageBody({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    BookController controller = Get.find();
+
+    return GetBuilder<BookController>(builder: (_) {
+      final bookStatus = controller.bookStatus;
+
+      if (bookStatus == BookStatus.loading) return const LoadingBuilder();
+      if (bookStatus == BookStatus.failed) {
+        return ErrorBuilder(tryAgain: controller.fetchAllBooks);
+      }
+
+      return Obx(() => Column(
+            children: [
+              // TODO: favourites list
+              // Container(
+              //   color: AppColors.primary.withOpacity(.12),
+              //   padding: const EdgeInsets.symmetric(vertical: 20),
+              //   margin: const EdgeInsets.only(top: 20),
+              //   child: HorizontalBookListView(
+              //     title: "Favorit",
+              //     booksList: controller.booksList,
+              //   ),
+              // ),
+              // TODO: recents list
+              // Padding(
+              //   padding: const EdgeInsets.only(top: 20),
+              //   child: HorizontalBookListView(
+              //     title: "Terakhir Dilihat",
+              //     booksList: controller.booksList,
+              //   ),
+              // ),
+              // const SizedBox(height: 50),
+              AllBooksListView(booksList: controller.booksList),
+            ],
+          ));
+    });
+  }
+}
+
+class LoadingBuilder extends StatelessWidget {
+  const LoadingBuilder({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: SizedBox(
+        height: 30,
+        width: 30,
+        child: CircularProgressIndicator(
+          color: AppColors.primary,
+        ),
+      ),
+    );
+  }
+}
+
+class ErrorBuilder extends StatelessWidget {
+  final Function() tryAgain;
+  const ErrorBuilder({super.key, required this.tryAgain});
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+        children: [
+          const Padding(
+            padding: EdgeInsets.only(top: 70, bottom: 10),
+            child: Text("Gagal mengambil data buku"),
+          ),
+          FormButton(
+            onPressed: tryAgain,
+            text: "Coba lagi",
+          ),
+        ],
       ),
     );
   }
@@ -169,7 +236,10 @@ class AllBooksListView extends StatelessWidget {
             ),
           ),
         ),
-        BooksListView(booksList: booksList)
+        Padding(
+          padding: const EdgeInsets.only(bottom: 80),
+          child: BooksListView(booksList: booksList),
+        )
       ],
     );
   }

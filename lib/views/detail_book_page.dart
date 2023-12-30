@@ -58,6 +58,7 @@ class _DetailBookPageState extends State<DetailBookPage> {
       publisher: _publisherController.text,
       pageCount: int.parse(_pageCountController.text),
       image: _imageController.text,
+      description: "", // TODO: add description
     );
 
     // TODO: upload to api
@@ -275,7 +276,6 @@ class _AddBookFormState extends State<AddBookForm> {
             keyboardType: TextInputType.name,
             readOnly: !widget.isEditing,
           ),
-          // TODO: use date picker
           OutlinedFormTextInput(
             controller: widget.controllers["publishedDate"]!,
             labelText: "Tanggal Publikasi",

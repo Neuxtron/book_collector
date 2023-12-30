@@ -48,6 +48,7 @@ class _AddBookPageState extends State<AddBookPage> {
       publisher: _publisherController.text,
       pageCount: int.parse(_pageCountController.text),
       image: _imageController.text,
+      description: "", // TODO: add description
     );
 
     // TODO: upload to api
