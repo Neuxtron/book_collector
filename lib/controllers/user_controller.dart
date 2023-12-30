@@ -32,6 +32,20 @@ class UserController extends GetxController {
       rethrow;
     }
   }
+
+  Future logout() async {
+    try {
+      userStatus = UserStatus.loading;
+      update();
+      await _userRepository.logout();
+      userStatus = UserStatus.normal;
+      update();
+    } catch (_) {
+      userStatus = UserStatus.normal;
+      update();
+      rethrow;
+    }
+  }
 }
 
 enum UserStatus { normal, loading }

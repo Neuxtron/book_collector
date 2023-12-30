@@ -43,4 +43,16 @@ class UserService {
     log(response.toString());
     helper.handleExceptions(response.statusCode, jsonResponse["message"]);
   }
+
+  Future logoutUser() async {
+    const endpoint = "/user/logout";
+    final response = await dio.delete(endpoint);
+    final jsonResponse = response.data;
+
+    if (response.statusCode == 200) {
+      return jsonResponse;
+    }
+    log(response.toString());
+    helper.handleExceptions(response.statusCode, jsonResponse["message"]);
+  }
 }

@@ -1,14 +1,26 @@
+import 'package:book_collector/controllers/user_controller.dart';
 import 'package:book_collector/utils/constants/app_colors.dart';
+import 'package:book_collector/utils/constants/pref_keys.dart';
 import 'package:book_collector/views/widgets/form_button.dart';
 import 'package:book_collector/views/widgets/outlined_form_text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
+  void handleLogout(UserController controller) async {
+    final prefs = await SharedPreferences.getInstance();
+    controller.logout();
+    prefs.setString(PrefKeys.userEmail, "");
+    Get.offAllNamed("/login");
+  }
+
   @override
   Widget build(BuildContext context) {
+    UserController controller = Get.find();
+
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
@@ -51,9 +63,7 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
               TextButton(
-                onPressed: () {
-                  // TODO: logout
-                },
+                onPressed: () => handleLogout(controller),
                 child: const Text(
                   "Logout Akun",
                   style: TextStyle(
