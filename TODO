@@ -22,7 +22,7 @@ Slicing:
     ✔ Veritcal listview for all books @started(23-12-28 23:01) @done(23-12-28 23:30) @lasted(29m45s)
 
 Main Features:
-  ☐ Login @critical
+  ✔ Login @critical @started(23-12-30 04:47) @done(23-12-30 08:32) @lasted(3h45m26s)
   ☐ Register @critical
   ☐ Logout @critical
 

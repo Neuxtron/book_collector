@@ -1,4 +1,5 @@
 import 'package:book_collector/utils/constants/app_colors.dart';
+import 'package:book_collector/utils/helpers/init_dependencies.dart';
 import 'package:book_collector/views/add_book_page.dart';
 import 'package:book_collector/views/edit_profile.dart';
 import 'package:book_collector/views/login_page.dart';
@@ -24,9 +25,11 @@ class MyApp extends StatelessWidget {
           accentColor: AppColors.primary,
         ),
       ),
-      initialRoute: "/main",
+      initialBinding: InitDep(),
+      initialRoute: "/login",
       routes: {
-        "/": (context) => const LoginPage(),
+        "/login": (context) => const LoginPage(),
+        "/register": (context) => const SignupPage(),
         "/main": (context) => const MainLayout(),
         "/add_book": (context) => const AddBookPage(),
         "/profile": (context) => const ProfilePage(),

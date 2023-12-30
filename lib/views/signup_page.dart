@@ -1,6 +1,7 @@
 import 'package:book_collector/utils/constants/app_colors.dart';
 import 'package:book_collector/views/widgets/form_text_input.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -172,7 +173,9 @@ class LoginButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Get.offNamed("/login");
+      },
       child: Text(
         "Sudah punya akun",
         style: TextStyle(color: AppColors.primary),

@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 
 class FormButton extends StatelessWidget {
   final Function() onPressed;
-  final bool enabled;
+  final bool isLoading;
   final String text;
   final double? minWidth;
 
@@ -11,7 +11,7 @@ class FormButton extends StatelessWidget {
     super.key,
     required this.onPressed,
     required this.text,
-    this.enabled = true,
+    this.isLoading = false,
     this.minWidth,
   });
 
@@ -19,14 +19,23 @@ class FormButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialButton(
       minWidth: minWidth,
-      onPressed: enabled ? onPressed : null,
+      onPressed: !isLoading ? onPressed : null,
       color: AppColors.primary,
       disabledColor: AppColors.primary.withOpacity(.5),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(7),
       ),
       textColor: Colors.white,
-      child: Text(text),
+      child: !isLoading
+          ? Text(text)
+          : SizedBox(
+              height: 20,
+              width: 20,
+              child: CircularProgressIndicator(
+                strokeWidth: 3,
+                color: Colors.white,
+              ),
+            ),
     );
   }
 }
