@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:book_collector/models/book_model.dart';
 import 'package:book_collector/utils/constants/app_colors.dart';
 import 'package:book_collector/views/widgets/form_button.dart';
@@ -68,10 +69,14 @@ class _DetailBookPageState extends State<DetailBookPage> {
   }
 
   void setControllerTexts() {
+    final publishedDate = widget.bookModel.publishedDate;
+    final formattedPublishedDate =
+        DateFormat('yyyy-MM-dd').format(publishedDate);
+
     _isbnController.text = widget.bookModel.isbn;
     _titleController.text = widget.bookModel.title;
     _authorController.text = widget.bookModel.author;
-    _publishedDateController.text = widget.bookModel.publishedDate.toString();
+    _publishedDateController.text = formattedPublishedDate;
     _publisherController.text = widget.bookModel.publisher;
     _pageCountController.text = widget.bookModel.pageCount.toString();
     _imageController.text = widget.bookModel.image;
@@ -214,6 +219,22 @@ class AddBookForm extends StatefulWidget {
 }
 
 class _AddBookFormState extends State<AddBookForm> {
+  void pickDate() async {
+    final date = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1000),
+      lastDate: DateTime.now(),
+    );
+
+    if (date != null) {
+      setState(() {
+        widget.controllers["publishedDate"]!.text =
+            DateFormat('yyyy-MM-dd').format(date);
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -258,7 +279,8 @@ class _AddBookFormState extends State<AddBookForm> {
           OutlinedFormTextInput(
             controller: widget.controllers["publishedDate"]!,
             labelText: "Tanggal Publikasi",
-            readOnly: !widget.isEditing,
+            readOnly: true,
+            onTap: widget.isEditing ? pickDate : null,
           ),
           OutlinedFormTextInput(
             controller: widget.controllers["publisher"]!,
