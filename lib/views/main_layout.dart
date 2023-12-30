@@ -14,15 +14,17 @@ class MainLayout extends StatefulWidget {
 class _MainLayoutState extends State<MainLayout> {
   int _selectedIndex = 0;
   final List _pages = [
-    HomePage(),
-    FavouritesPage(),
-    HistoryPage(),
+    const HomePage(),
+    const FavouritesPage(),
+    const HistoryPage(),
   ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _pages[_selectedIndex],
+      body: SafeArea(
+        child: _pages[_selectedIndex],
+      ),
       bottomNavigationBar: BottomNavigationBar(
         onTap: (value) => setState(() => _selectedIndex = value),
         currentIndex: _selectedIndex,

@@ -8,34 +8,32 @@ class FavouritesPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.only(top: 40, left: 20, bottom: 20),
-              child: Row(
-                children: [
-                  Icon(
-                    Icons.star,
+    return SingleChildScrollView(
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 40, left: 20, bottom: 20),
+            child: Row(
+              children: [
+                Icon(
+                  Icons.star,
+                  color: AppColors.lightYelllow,
+                ),
+                SizedBox(width: 10),
+                Text(
+                  "Buku Favorit",
+                  style: TextStyle(
+                    fontSize: 32,
                     color: AppColors.lightYelllow,
+                    fontWeight: FontWeight.bold,
                   ),
-                  SizedBox(width: 10),
-                  Text(
-                    "Buku Favorit",
-                    style: TextStyle(
-                      fontSize: 32,
-                      color: AppColors.lightYelllow,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
-            BooksListView(booksList: DummyBooks.allBooks)
-          ],
-        ),
+          ),
+          BooksListView(booksList: DummyBooks.allBooks)
+        ],
       ),
     );
   }

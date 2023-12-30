@@ -8,6 +8,7 @@ class OutlinedFormTextInput extends StatelessWidget {
   final TextInputType? keyboardType;
   final Function(String value)? onChanged;
   final bool readOnly;
+  final Function()? onTap;
 
   const OutlinedFormTextInput({
     super.key,
@@ -16,6 +17,7 @@ class OutlinedFormTextInput extends StatelessWidget {
     this.keyboardType,
     this.onChanged,
     this.readOnly = false,
+    this.onTap,
   });
 
   @override
@@ -28,6 +30,7 @@ class OutlinedFormTextInput extends StatelessWidget {
         keyboardType: keyboardType,
         onChanged: onChanged,
         readOnly: readOnly,
+        onTap: onTap,
         decoration: InputDecoration(
           labelText: labelText,
           floatingLabelStyle: const TextStyle(color: AppColors.primary),
