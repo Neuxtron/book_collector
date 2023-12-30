@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:book_collector/controllers/book_controller.dart';
 import 'package:intl/intl.dart';
 import 'package:book_collector/models/book_model.dart';
 import 'package:book_collector/utils/constants/app_colors.dart';
@@ -15,6 +18,8 @@ class DetailBookPage extends StatefulWidget {
 }
 
 class _DetailBookPageState extends State<DetailBookPage> {
+  BookController _controller = Get.find();
+
   final _descriptionController = TextEditingController();
   final _isbnController = TextEditingController();
   final _titleController = TextEditingController();
@@ -24,9 +29,13 @@ class _DetailBookPageState extends State<DetailBookPage> {
   final _publisherController = TextEditingController();
   final _pageCountController = TextEditingController();
   final _imageController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  final _scrollController = ScrollController();
 
   String _imgUrl = "";
   bool _isEditing = false;
+  String _error = "Tekan edit untuk mulai edit";
+  String _errorType = "warning";
 
   Map<String, TextEditingController> get _controllers => {
         "description": _descriptionController,
@@ -48,24 +57,37 @@ class _DetailBookPageState extends State<DetailBookPage> {
     }
   }
 
-  void onSubmit() {
-    final formattedPublishedDate =
-        DateTime.parse(_publishedDateController.text);
+  void onSubmit() async {
+    if (_formKey.currentState!.validate()) {
+      final formattedPublishedDate =
+          DateTime.parse(_publishedDateController.text);
 
-    final bookModel = BookModel(
-      isbn: _isbnController.text,
-      title: _titleController.text,
-      series: _seriesController.text,
-      author: _authorController.text,
-      publishedDate: formattedPublishedDate,
-      publisher: _publisherController.text,
-      pageCount: int.parse(_pageCountController.text),
-      image: _imageController.text,
-      description: "", // TODO: add description
-    );
+      final bookModel = BookModel(
+        id: widget.bookModel.id,
+        isbn: _isbnController.text,
+        title: _titleController.text,
+        series: _seriesController.text,
+        author: _authorController.text,
+        publishedDate: formattedPublishedDate,
+        publisher: _publisherController.text,
+        pageCount: int.parse(_pageCountController.text),
+        image: _imageController.text,
+        description: _descriptionController.text,
+      );
 
-    // TODO: upload to api
-    print(bookModel);
+      try {
+        await _controller.editBook(bookModel);
+        Get.back();
+      } on SocketException catch (_) {
+        _scrollController.jumpTo(0);
+        _errorType = "error";
+        setState(() => _error = "Gagal terhubung ke server");
+      } catch (_) {
+        _errorType = "error";
+        _scrollController.jumpTo(0);
+        setState(() => _error = "Terjadi kesalahan, silahkan coba lagi");
+      }
+    }
   }
 
   void onImageChanged(url) {
@@ -79,6 +101,7 @@ class _DetailBookPageState extends State<DetailBookPage> {
 
     _isbnController.text = widget.bookModel.isbn;
     _titleController.text = widget.bookModel.title;
+    _seriesController.text = widget.bookModel.series;
     _authorController.text = widget.bookModel.author;
     _publishedDateController.text = formattedPublishedDate;
     _publisherController.text = widget.bookModel.publisher;
@@ -119,25 +142,36 @@ class _DetailBookPageState extends State<DetailBookPage> {
                 ),
               ),
             ),
-            FormButton(
-              onPressed: _isEditing
-                  ? onSubmit
-                  : () => setState(() => _isEditing = true),
-              text: _isEditing ? "Simpan" : "Edit",
-              minWidth: 100,
-            ),
+            GetBuilder<BookController>(builder: (_) {
+              return FormButton(
+                onPressed: _isEditing
+                    ? onSubmit
+                    : () => setState(() => _isEditing = true),
+                text: _isEditing ? "Simpan" : "Edit",
+                minWidth: 100,
+                isLoading: _controller.bookStatus == BookStatus.loading,
+              );
+            })
           ],
         ),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
+          controller: _scrollController,
           child: Column(
             children: [
               PageHeader(onChange: toggleFavourite),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30),
-                child: _imgUrl == ""
-                    ? Container(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(7),
+                  child: Image.network(
+                    _imgUrl,
+                    fit: BoxFit.cover,
+                    height: 180,
+                    width: 100,
+                    errorBuilder: (context, error, stackTrace) {
+                      return Container(
                         height: 180,
                         width: 100,
                         decoration: BoxDecoration(
@@ -146,24 +180,31 @@ class _DetailBookPageState extends State<DetailBookPage> {
                         ),
                         child: const Center(
                           child: Text(
-                            "Buku Baru",
+                            "Edit Buku",
                             style: TextStyle(color: Colors.white),
                           ),
-                        ))
-                    : ClipRRect(
-                        borderRadius: BorderRadius.circular(7),
-                        child: Image.network(
-                          _imgUrl,
-                          fit: BoxFit.cover,
-                          height: 180,
-                          width: 100,
                         ),
-                      ),
+                      );
+                    },
+                  ),
+                ),
               ),
-              AddBookForm(
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 20),
+                child: Text(
+                  _error,
+                  style: TextStyle(
+                    color: _errorType == "warning"
+                        ? Colors.yellow.shade700
+                        : Colors.red,
+                  ),
+                ),
+              ),
+              EditBookForm(
                 controllers: _controllers,
                 onImageChanged: onImageChanged,
                 isEditing: _isEditing,
+                formKey: _formKey,
               ),
             ],
           ),
@@ -206,23 +247,25 @@ class _PageHeaderState extends State<PageHeader> {
   }
 }
 
-class AddBookForm extends StatefulWidget {
+class EditBookForm extends StatefulWidget {
   final Map<String, TextEditingController> controllers;
   final Function(String url) onImageChanged;
   final bool isEditing;
+  final GlobalKey formKey;
 
-  const AddBookForm({
+  const EditBookForm({
     super.key,
     required this.controllers,
     required this.onImageChanged,
     required this.isEditing,
+    required this.formKey,
   });
 
   @override
-  State<AddBookForm> createState() => _AddBookFormState();
+  State<EditBookForm> createState() => _EditBookFormState();
 }
 
-class _AddBookFormState extends State<AddBookForm> {
+class _EditBookFormState extends State<EditBookForm> {
   void pickDate() async {
     final date = await showDatePicker(
       context: context,
@@ -243,69 +286,78 @@ class _AddBookFormState extends State<AddBookForm> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-      child: Column(
-        children: [
-          TextField(
-            controller: widget.controllers["description"]!,
-            maxLines: 4,
-            cursorColor: AppColors.primary,
-            readOnly: !widget.isEditing,
-            decoration: InputDecoration(
-              fillColor: AppColors.primary.withAlpha(95),
-              filled: true,
-              hintText: "Deskripsi buku",
-              enabledBorder:
-                  const OutlineInputBorder(borderSide: BorderSide.none),
-              focusedBorder:
-                  const OutlineInputBorder(borderSide: BorderSide.none),
+      child: Form(
+        key: widget.formKey,
+        child: Column(
+          children: [
+            TextField(
+              controller: widget.controllers["description"]!,
+              maxLines: 4,
+              cursorColor: AppColors.primary,
+              readOnly: !widget.isEditing,
+              decoration: InputDecoration(
+                fillColor: AppColors.primary.withAlpha(95),
+                filled: true,
+                hintText: "Deskripsi buku",
+                enabledBorder:
+                    const OutlineInputBorder(borderSide: BorderSide.none),
+                focusedBorder:
+                    const OutlineInputBorder(borderSide: BorderSide.none),
+              ),
             ),
-          ),
-          const SizedBox(height: 30),
-          OutlinedFormTextInput(
-            controller: widget.controllers["isbn"]!,
-            labelText: "ISBN",
-            keyboardType: TextInputType.number,
-            readOnly: !widget.isEditing,
-          ),
-          OutlinedFormTextInput(
-            controller: widget.controllers["title"]!,
-            labelText: "Judul Buku",
-            keyboardType: TextInputType.name,
-            readOnly: !widget.isEditing,
-          ),
-          // TODO: add series
-          OutlinedFormTextInput(
-            controller: widget.controllers["author"]!,
-            labelText: "Penulis",
-            keyboardType: TextInputType.name,
-            readOnly: !widget.isEditing,
-          ),
-          OutlinedFormTextInput(
-            controller: widget.controllers["publishedDate"]!,
-            labelText: "Tanggal Publikasi",
-            readOnly: true,
-            onTap: widget.isEditing ? pickDate : null,
-          ),
-          OutlinedFormTextInput(
-            controller: widget.controllers["publisher"]!,
-            labelText: "Penerbit",
-            keyboardType: TextInputType.name,
-            readOnly: !widget.isEditing,
-          ),
-          OutlinedFormTextInput(
-            controller: widget.controllers["pageCount"]!,
-            labelText: "Jumlah Halaman",
-            keyboardType: TextInputType.number,
-            readOnly: !widget.isEditing,
-          ),
-          OutlinedFormTextInput(
-            controller: widget.controllers["image"]!,
-            labelText: "URL Gambar",
-            onChanged: widget.onImageChanged,
-            readOnly: !widget.isEditing,
-          ),
-          const SizedBox(height: 10),
-        ],
+            const SizedBox(height: 30),
+            OutlinedFormTextInput(
+              controller: widget.controllers["isbn"]!,
+              labelText: "ISBN",
+              keyboardType: TextInputType.number,
+              readOnly: !widget.isEditing,
+            ),
+            OutlinedFormTextInput(
+              controller: widget.controllers["title"]!,
+              labelText: "Judul Buku",
+              keyboardType: TextInputType.name,
+              readOnly: !widget.isEditing,
+            ),
+            OutlinedFormTextInput(
+              controller: widget.controllers["series"]!,
+              labelText: "Series",
+              keyboardType: TextInputType.name,
+              readOnly: !widget.isEditing,
+            ),
+            OutlinedFormTextInput(
+              controller: widget.controllers["author"]!,
+              labelText: "Penulis",
+              keyboardType: TextInputType.name,
+              readOnly: !widget.isEditing,
+            ),
+            OutlinedFormTextInput(
+              controller: widget.controllers["publishedDate"]!,
+              labelText: "Tanggal Publikasi",
+              readOnly: true,
+              onTap: widget.isEditing ? pickDate : null,
+            ),
+            OutlinedFormTextInput(
+              controller: widget.controllers["publisher"]!,
+              labelText: "Penerbit",
+              keyboardType: TextInputType.name,
+              readOnly: !widget.isEditing,
+            ),
+            OutlinedFormTextInput(
+              controller: widget.controllers["pageCount"]!,
+              labelText: "Jumlah Halaman",
+              keyboardType: TextInputType.number,
+              readOnly: !widget.isEditing,
+            ),
+            OutlinedFormTextInput(
+              controller: widget.controllers["image"]!,
+              labelText: "URL Gambar",
+              onChanged: widget.onImageChanged,
+              readOnly: !widget.isEditing,
+              required: false,
+            ),
+            const SizedBox(height: 10),
+          ],
+        ),
       ),
     );
   }

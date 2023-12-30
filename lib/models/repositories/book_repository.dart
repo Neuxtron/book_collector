@@ -49,4 +49,29 @@ class BookRepository {
       rethrow;
     }
   }
+
+  Future editBook(BookModel model) async {
+    try {
+      await _bookService.editBookResponse(
+        model.id!,
+        model.isbn,
+        model.title,
+        model.series,
+        model.author,
+        DateFormat('yyyy-MM-dd').format(model.publishedDate),
+        model.publisher,
+        model.pageCount,
+        model.description,
+        model.image,
+      );
+    } on SocketException catch (e) {
+      log(e.message);
+      final message =
+          "Failed to connect to server: ${DioApi.dio.options.baseUrl}";
+      throw SocketException(message);
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
 }

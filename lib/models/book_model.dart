@@ -25,13 +25,14 @@ class BookModel {
 
   factory BookModel.fromJson(Map<String, dynamic> json) {
     return BookModel(
+      id: json["id"],
       isbn: json["isbn"],
       title: json["title"],
-      series: json["subtitle"],
-      author: json["author"],
+      series: json["subtitle"] ?? "",
+      author: json["author"] ?? "",
       publishedDate: DateTime.parse(json["published"]),
-      publisher: json["publisher"],
-      pageCount: json["pages"],
+      publisher: json["publisher"] ?? "",
+      pageCount: json["pages"] ?? 0,
       image: json["website"] ?? "",
       description: json["description"] ?? "",
     );

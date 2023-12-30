@@ -146,10 +146,10 @@ class _AddBookPageState extends State<AddBookPage> {
                 ),
               ),
               Padding(
-                padding: EdgeInsets.symmetric(vertical: 20),
+                padding: const EdgeInsets.symmetric(vertical: 20),
                 child: Text(
                   _error,
-                  style: TextStyle(color: Colors.red),
+                  style: const TextStyle(color: Colors.red),
                 ),
               ),
               AddBookForm(

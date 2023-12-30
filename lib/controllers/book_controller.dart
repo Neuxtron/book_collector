@@ -45,6 +45,20 @@ class BookController extends GetxController {
       rethrow;
     }
   }
+
+  Future editBook(BookModel model) async {
+    try {
+      _bookStatus = BookStatus.loading;
+      update();
+      await _bookRepository.editBook(model);
+      _bookStatus = BookStatus.normal;
+      update();
+    } catch (_) {
+      _bookStatus = BookStatus.failed;
+      update();
+      rethrow;
+    }
+  }
 }
 
 enum BookStatus { normal, loading, failed }
