@@ -52,22 +52,24 @@ class _FavouritesPageState extends State<FavouritesPage> {
           Obx(
             () {
               final favouriteBooks = controller.favouriteBooks;
-              if (controller.bookStatus == BookStatus.loading) {
-                return const LoadingBuilder();
-              }
-              if (controller.bookStatus == BookStatus.failed) {
-                return const ErrorBuilder();
-              }
+              return GetBuilder<BookController>(builder: (_) {
+                if (controller.bookStatus == BookStatus.loading) {
+                  return const LoadingBuilder();
+                }
+                if (controller.bookStatus == BookStatus.failed) {
+                  return const ErrorBuilder();
+                }
 
-              if (favouriteBooks.isEmpty) {
-                return const Center(
-                  child: Text("Tidak ada buku favorit"),
+                if (favouriteBooks.isEmpty) {
+                  return const Center(
+                    child: Text("Tidak ada buku favorit"),
+                  );
+                }
+                return BooksListView(
+                  booksList: favouriteBooks,
+                  onBack: (value) => controller.updateAllBooks(),
                 );
-              }
-              return BooksListView(
-                booksList: favouriteBooks,
-                onBack: (value) => controller.updateAllBooks(),
-              );
+              });
             },
           )
         ],

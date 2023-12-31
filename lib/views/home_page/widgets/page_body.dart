@@ -1,5 +1,4 @@
 import 'package:book_collector/controllers/book_controller.dart';
-import 'package:book_collector/models/book_model.dart';
 import 'package:book_collector/views/widgets/error_builder.dart';
 import 'package:book_collector/views/widgets/loading_builder.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +23,17 @@ class PageBody extends StatefulWidget {
 }
 
 class _PageBodyState extends State<PageBody> {
+  void onBack(value) {
+    widget.bookController.updateAllBooks();
+    setState(() {});
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    widget.bookController.updateAllBooks();
+  }
+
   @override
   Widget build(BuildContext context) {
     widget.bookController.fetchAllBooks();
@@ -37,30 +47,25 @@ class _PageBodyState extends State<PageBody> {
         return const ErrorBuilder();
       }
 
-      return Obx(() {
-        final booksList = widget.bookController.booksList;
-        List<BookModel> searchedBooksList = booksList.where((book) {
-          final bookTitle = book.title.toLowerCase();
-          final searchText = widget.searchText.toLowerCase();
-          return bookTitle.contains(searchText);
-        }).toList();
-        return Column(
-          children: [
-            widget.searchText.isEmpty
-                ? FavouritesSection(booksList: booksList)
-                : const SizedBox(),
-            widget.searchText.isEmpty
-                ? RecentsSections(booksList: booksList)
-                : const SizedBox(),
-            const SizedBox(height: 50),
-            AllBooksListView(
-              booksList:
-                  widget.searchText.isEmpty ? booksList : searchedBooksList,
-              onBack: (value) => setState(() {}),
-            ),
-          ],
-        );
-      });
+      return Column(
+        children: [
+          widget.searchText.isEmpty
+              ? FavouritesSection(
+                  onBack: onBack,
+                )
+              : const SizedBox(),
+          widget.searchText.isEmpty
+              ? RecentsSections(
+                  onBack: onBack,
+                )
+              : const SizedBox(),
+          const SizedBox(height: 50),
+          AllBooksListView(
+            searchText: widget.searchText,
+            onBack: (value) => setState(() {}),
+          ),
+        ],
+      );
     });
   }
 }
