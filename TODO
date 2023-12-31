@@ -1,6 +1,6 @@
 NOTES:
-  ☐ Use Getx for state management
-  ☐ Use Dio for api calls
+  ✔ Use Getx for state management @done(23-12-31 15:59)
+  ✔ Use Dio for api calls @done(23-12-31 15:59)
 
 Slicing:
   ✔ Login page @started(23-12-28 18:05) @done(23-12-28 20:55) @lasted(2h50m44s)
