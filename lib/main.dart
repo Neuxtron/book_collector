@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
+      title: "Book Collector",
       theme: ThemeData(
         colorScheme: ColorScheme.fromSwatch(
           accentColor: AppColors.primary,
