@@ -28,8 +28,13 @@ class _FavouritesPageState extends State<FavouritesPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     getFavouriteIds();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -74,7 +79,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
               }
               return BooksListView(
                 booksList: favouriteBooks,
-                onBack: (value) => setState(() {}),
+                onBack: (value) => getFavouriteIds(),
               );
             },
           )
