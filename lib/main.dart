@@ -1,6 +1,6 @@
 import 'package:book_collector/utils/constants/app_colors.dart';
 import 'package:book_collector/utils/helpers/init_dependencies.dart';
-import 'package:book_collector/views/add_book_page.dart';
+import 'package:book_collector/views/add_book/add_book_page.dart';
 import 'package:book_collector/views/auth_pages/auth_page.dart';
 import 'package:book_collector/views/edit_profile.dart';
 import 'package:book_collector/views/auth_pages/login_page/login_page.dart';
