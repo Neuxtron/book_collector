@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 import 'delete_dalog.dart';
 
@@ -12,7 +13,9 @@ class DeleteButton extends StatelessWidget {
       builder: (context) {
         return DeleteDialog(bookId: bookId);
       },
-    );
+    ).then((value) {
+      if (value == "deleted") Get.back();
+    });
   }
 
   @override

@@ -27,6 +27,7 @@ class _PageBodyState extends State<PageBody> {
   @override
   Widget build(BuildContext context) {
     widget.bookController.fetchAllBooks();
+    widget.bookController.updateAllBooks();
     return GetBuilder<BookController>(builder: (_) {
       final bookStatus = widget.bookController.bookStatus;
 

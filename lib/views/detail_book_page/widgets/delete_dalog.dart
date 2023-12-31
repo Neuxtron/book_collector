@@ -22,7 +22,7 @@ class _DeleteDialogState extends State<DeleteDialog> {
   void onDelete() async {
     try {
       await controller.deleteBook(widget.bookId);
-      Get.back();
+      Get.back(result: "deleted");
       controller.fetchAllBooks();
     } on SocketException catch (_) {
       setState(() => _error = "Gagal terhubung ke server");
