@@ -37,7 +37,7 @@ Main Features:
   ✔ Search @high @started(23-12-31 14:40) @done(23-12-31 14:56) @lasted(16m56s)
   ✔ Show Profile @high @started(23-12-31 12:05) @done(23-12-31 12:17) @lasted(12m36s)
   ✘ Edit Profile @cancelled(23-12-31 11:20)
-  ☐ Clear favourites and history on logout @high
+  ✔ Clear favourites and history on logout @high @started(23-12-31 15:39) @done(23-12-31 15:40) @lasted(1m42s)
 
   ☐ Pull to refresh @low
   ✘ Delete account @low @cancelled(23-12-31 11:17)

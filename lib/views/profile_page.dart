@@ -13,6 +13,8 @@ class ProfilePage extends StatelessWidget {
     final prefs = await SharedPreferences.getInstance();
     controller.logout();
     prefs.setString(PrefKeys.userToken, "");
+    prefs.setStringList(PrefKeys.favouriteIds, []);
+    prefs.setStringList(PrefKeys.recentIds, []);
     Get.offAllNamed("/login");
   }
 
@@ -47,7 +49,7 @@ class ProfilePage extends StatelessWidget {
                       width: 130,
                       height: 130,
                       margin: const EdgeInsets.only(top: 20, bottom: 30),
-                      padding: EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration(
                         color: AppColors.primary.withOpacity(.3),
                         borderRadius: BorderRadius.circular(7),
