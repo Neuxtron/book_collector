@@ -6,39 +6,27 @@ import 'package:get/get.dart';
 
 import 'horizontal_books_list_view.dart';
 
-class FavouritesSection extends StatefulWidget {
-  final List<BookModel> booksList;
-  const FavouritesSection({super.key, required this.booksList});
+class FavouritesSection extends StatelessWidget {
+  final Function(dynamic value) onBack;
+  const FavouritesSection({super.key, required this.onBack});
 
-  @override
-  State<FavouritesSection> createState() => _FavouritesSectionState();
-}
-
-class _FavouritesSectionState extends State<FavouritesSection> {
-  BookController controller = Get.find();
-
-  @override
-  void initState() {
-    super.initState();
-    controller.updateRecentBooks();
-  }
+  BookController get controller => Get.find();
+  List<BookModel> get _favouriteBooks => controller.favouriteBooks;
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      final favouriteBooks = controller.favouriteBooks;
-      if (favouriteBooks.isEmpty) return const SizedBox();
-
-      return Container(
-        color: AppColors.primary.withOpacity(.12),
-        padding: const EdgeInsets.symmetric(vertical: 20),
-        margin: const EdgeInsets.only(top: 20),
-        child: HorizontalBookListView(
+    if (_favouriteBooks.isEmpty) return const SizedBox();
+    return Container(
+      color: AppColors.primary.withOpacity(.12),
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      margin: const EdgeInsets.only(top: 20),
+      child: Obx(() {
+        return HorizontalBookListView(
           title: "Favorit",
-          booksList: favouriteBooks,
-          onBack: (value) => controller.updateAllBooks(),
-        ),
-      );
-    });
+          booksList: _favouriteBooks,
+          onBack: onBack,
+        );
+      }),
+    );
   }
 }

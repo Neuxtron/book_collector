@@ -31,6 +31,7 @@ class BookController extends GetxController {
     try {
       final booksList = await _bookRepository.fetchAllBooks();
       _booksList.assignAll(booksList);
+      updateAllBooks();
       _bookStatus = BookStatus.normal;
       update();
     } catch (_) {
@@ -83,7 +84,6 @@ class BookController extends GetxController {
   }
 
   void updateFavouriteBooks() async {
-    await fetchAllBooks();
     final prefs = await SharedPreferences.getInstance();
     final rawIds = prefs.getStringList(PrefKeys.favouriteIds) ?? [];
     final ids = rawIds.map((e) => int.tryParse(e) ?? -1).toList();
@@ -100,7 +100,6 @@ class BookController extends GetxController {
   }
 
   void updateRecentBooks() async {
-    await fetchAllBooks();
     final prefs = await SharedPreferences.getInstance();
     final rawIds = prefs.getStringList(PrefKeys.recentIds) ?? [];
     final ids = rawIds.map((e) => int.tryParse(e) ?? -1).toList();

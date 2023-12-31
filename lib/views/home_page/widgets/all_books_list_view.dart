@@ -1,19 +1,23 @@
+import 'package:book_collector/controllers/book_controller.dart';
 import 'package:book_collector/models/book_model.dart';
 import 'package:book_collector/views/widgets/books_list_view.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class AllBooksListView extends StatelessWidget {
-  final List<BookModel> booksList;
+  final String searchText;
   final Function(dynamic value) onBack;
 
   const AllBooksListView({
     super.key,
-    required this.booksList,
     required this.onBack,
+    required this.searchText,
   });
 
   @override
   Widget build(BuildContext context) {
+    BookController controller = Get.find();
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -29,13 +33,21 @@ class AllBooksListView extends StatelessWidget {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 80),
-          child: BooksListView(
-            booksList: booksList,
-            onBack: onBack,
-          ),
-        )
+        Obx(() {
+          final booksList = controller.booksList;
+          List<BookModel> searchedBooksList = booksList.where((book) {
+            final bookTitle = book.title.toLowerCase();
+            final searchTextLower = searchText.toLowerCase();
+            return bookTitle.contains(searchTextLower);
+          }).toList();
+          return Padding(
+            padding: const EdgeInsets.only(bottom: 80),
+            child: BooksListView(
+              booksList: searchText.isEmpty ? booksList : searchedBooksList,
+              onBack: onBack,
+            ),
+          );
+        })
       ],
     );
   }

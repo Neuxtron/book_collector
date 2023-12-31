@@ -5,37 +5,25 @@ import 'package:get/get.dart';
 
 import 'horizontal_books_list_view.dart';
 
-class RecentsSections extends StatefulWidget {
-  final List<BookModel> booksList;
-  const RecentsSections({super.key, required this.booksList});
+class RecentsSections extends StatelessWidget {
+  final Function(dynamic value) onBack;
+  const RecentsSections({super.key, required this.onBack});
 
-  @override
-  State<RecentsSections> createState() => _RecentsSectionsState();
-}
-
-class _RecentsSectionsState extends State<RecentsSections> {
-  BookController controller = Get.find();
-
-  @override
-  void initState() {
-    super.initState();
-    controller.updateRecentBooks();
-  }
+  BookController get controller => Get.find();
+  List<BookModel> get _recentBooks => controller.recentBooks;
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() {
-      final recentBooks = controller.recentBooks;
-      if (recentBooks.isEmpty) return const SizedBox();
-
-      return Padding(
-        padding: const EdgeInsets.only(top: 20),
-        child: HorizontalBookListView(
+    if (_recentBooks.isEmpty) return const SizedBox();
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: Obx(() {
+        return HorizontalBookListView(
           title: "Terakhir Dilihat",
-          booksList: recentBooks,
-          onBack: (value) => controller.updateAllBooks(),
-        ),
-      );
-    });
+          booksList: _recentBooks,
+          onBack: onBack,
+        );
+      }),
+    );
   }
 }
