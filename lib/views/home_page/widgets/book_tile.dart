@@ -6,17 +6,21 @@ import 'package:get/get.dart';
 
 class BookTile extends StatelessWidget {
   final BookModel model;
+  final Function(dynamic value)? onBack;
 
   const BookTile({
     super.key,
     required this.model,
+    this.onBack,
   });
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to(() => DetailBookPage(bookModel: model));
+        Get.to(() {
+          return DetailBookPage(bookModel: model);
+        })?.then(onBack ?? (value) {});
       },
       child: Container(
         height: 200,

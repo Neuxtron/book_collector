@@ -1,13 +1,35 @@
-import 'package:book_collector/models/source/dummy_books.dart';
+import 'package:book_collector/controllers/book_controller.dart';
+import 'package:book_collector/models/book_model.dart';
 import 'package:book_collector/utils/constants/app_colors.dart';
+import 'package:book_collector/utils/constants/pref_keys.dart';
 import 'package:book_collector/views/widgets/books_list_view.dart';
+import 'package:book_collector/views/widgets/error_builder.dart';
+import 'package:book_collector/views/widgets/loading_builder.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-class FavouritesPage extends StatelessWidget {
+class FavouritesPage extends StatefulWidget {
   const FavouritesPage({super.key});
 
   @override
+  State<FavouritesPage> createState() => _FavouritesPageState();
+}
+
+class _FavouritesPageState extends State<FavouritesPage> {
+  BookController controller = Get.find();
+  List<int> _favouriteIds = [];
+
+  void getFavouriteIds() async {
+    final prefs = await SharedPreferences.getInstance();
+    final rawIds = prefs.getStringList(PrefKeys.favouriteIds) ?? [];
+    final ids = rawIds.map((e) => int.tryParse(e) ?? -1).toList();
+    setState(() => _favouriteIds = ids);
+  }
+
+  @override
   Widget build(BuildContext context) {
+    getFavouriteIds();
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -20,7 +42,7 @@ class FavouritesPage extends StatelessWidget {
                   Icons.star,
                   color: AppColors.lightYelllow,
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Text(
                   "Buku Favorit",
                   style: TextStyle(
@@ -32,7 +54,30 @@ class FavouritesPage extends StatelessWidget {
               ],
             ),
           ),
-          BooksListView(booksList: DummyBooks.allBooks)
+          const SizedBox(height: 30),
+          Obx(
+            () {
+              if (controller.bookStatus == BookStatus.loading) {
+                return const LoadingBuilder();
+              }
+              if (controller.bookStatus == BookStatus.failed) {
+                return const ErrorBuilder();
+              }
+              List<BookModel> favouriteBooks = controller.booksList
+                  .where((book) => _favouriteIds.contains(book.id))
+                  .toList();
+
+              if (favouriteBooks.isEmpty) {
+                return const Center(
+                  child: Text("Tidak ada buku favorit"),
+                );
+              }
+              return BooksListView(
+                booksList: favouriteBooks,
+                onBack: (value) => setState(() {}),
+              );
+            },
+          )
         ],
       ),
     );

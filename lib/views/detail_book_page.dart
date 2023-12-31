@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:book_collector/controllers/book_controller.dart';
+import 'package:book_collector/utils/constants/pref_keys.dart';
 import 'package:intl/intl.dart';
 import 'package:book_collector/models/book_model.dart';
 import 'package:book_collector/utils/constants/app_colors.dart';
@@ -8,6 +9,7 @@ import 'package:book_collector/views/widgets/form_button.dart';
 import 'package:book_collector/views/widgets/outlined_form_text_input.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class DetailBookPage extends StatefulWidget {
   final BookModel bookModel;
@@ -48,14 +50,6 @@ class _DetailBookPageState extends State<DetailBookPage> {
         "pageCount": _pageCountController,
         "image": _imageController,
       };
-
-  void toggleFavourite(value) {
-    if (value) {
-      // TODO: save id in localstorage
-    } else {
-      // TODO: remove id from localstorage
-    }
-  }
 
   void onSubmit() async {
     if (_formKey.currentState!.validate()) {
@@ -166,7 +160,7 @@ class _DetailBookPageState extends State<DetailBookPage> {
           controller: _scrollController,
           child: Column(
             children: [
-              PageHeader(onChange: toggleFavourite),
+              PageHeader(bookId: widget.bookModel.id!),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 30),
                 child: ClipRRect(
@@ -222,8 +216,12 @@ class _DetailBookPageState extends State<DetailBookPage> {
 }
 
 class PageHeader extends StatefulWidget {
-  final Function(bool value) onChange;
-  const PageHeader({super.key, required this.onChange});
+  final int bookId;
+
+  const PageHeader({
+    super.key,
+    required this.bookId,
+  });
 
   @override
   State<PageHeader> createState() => _PageHeaderState();
@@ -231,6 +229,38 @@ class PageHeader extends StatefulWidget {
 
 class _PageHeaderState extends State<PageHeader> {
   bool _isFavourite = false;
+
+  void toggleFavourite(value) async {
+    final prefs = await SharedPreferences.getInstance();
+    final rawIds = prefs.getStringList(PrefKeys.favouriteIds) ?? [];
+    List<int> ids = rawIds.map((e) => int.tryParse(e) ?? -1).toList();
+
+    if (value) {
+      ids.add(widget.bookId);
+      final stringIds = ids.map((e) => e.toString()).toList();
+      prefs.setStringList(PrefKeys.favouriteIds, stringIds);
+    } else {
+      ids.removeWhere((id) => id == widget.bookId);
+      final stringIds = ids.map((e) => e.toString()).toList();
+      prefs.setStringList(PrefKeys.favouriteIds, stringIds);
+    }
+  }
+
+  void getFavourites() async {
+    final prefs = await SharedPreferences.getInstance();
+    final rawIds = prefs.getStringList(PrefKeys.favouriteIds) ?? [];
+    List<int> ids = rawIds.map((e) => int.tryParse(e) ?? -1).toList();
+
+    setState(() {
+      _isFavourite = ids.contains(widget.bookId);
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getFavourites();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -241,7 +271,7 @@ class _PageHeaderState extends State<PageHeader> {
         child: IconButton(
           onPressed: () {
             setState(() => _isFavourite = !_isFavourite);
-            widget.onChange(_isFavourite);
+            toggleFavourite(_isFavourite);
           },
           iconSize: 40,
           icon: Icon(

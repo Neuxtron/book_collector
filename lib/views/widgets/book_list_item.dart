@@ -7,10 +7,12 @@ import 'package:intl/intl.dart';
 
 class BookListItem extends StatelessWidget {
   final BookModel model;
+  final Function(dynamic value)? onBack;
 
   const BookListItem({
     super.key,
     required this.model,
+    this.onBack,
   });
 
   @override
@@ -20,7 +22,9 @@ class BookListItem extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        Get.to(() => DetailBookPage(bookModel: model));
+        Get.to(() {
+          return DetailBookPage(bookModel: model);
+        })?.then(onBack ?? (value) {});
       },
       child: Container(
         height: 130,

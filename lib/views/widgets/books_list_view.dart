@@ -5,7 +5,13 @@ import 'book_list_item.dart';
 
 class BooksListView extends StatelessWidget {
   final List<BookModel> booksList;
-  const BooksListView({super.key, required this.booksList});
+  final Function(dynamic value)? onBack;
+
+  const BooksListView({
+    super.key,
+    required this.booksList,
+    this.onBack,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +23,7 @@ class BooksListView extends StatelessWidget {
         final book = booksList[index];
         return BookListItem(
           model: book,
+          onBack: onBack,
         );
       },
     );

@@ -20,7 +20,6 @@ class BookController extends GetxController {
   }
 
   Future fetchAllBooks() async {
-    print("AAAAAAAAAA");
     try {
       final booksList = await _bookRepository.fetchAllBooks();
       _booksList.assignAll(booksList);

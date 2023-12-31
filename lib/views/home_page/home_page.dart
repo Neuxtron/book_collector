@@ -1,11 +1,14 @@
 import 'package:book_collector/controllers/book_controller.dart';
 import 'package:book_collector/models/book_model.dart';
 import 'package:book_collector/utils/constants/app_colors.dart';
+import 'package:book_collector/utils/constants/pref_keys.dart';
 import 'package:book_collector/views/home_page/widgets/book_tile.dart';
 import 'package:book_collector/views/widgets/books_list_view.dart';
-import 'package:book_collector/views/widgets/form_button.dart';
+import 'package:book_collector/views/widgets/error_builder.dart';
+import 'package:book_collector/views/widgets/loading_builder.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -22,7 +25,7 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          Get.toNamed("/add_book")?.then((value) => controller.fetchAllBooks());
+          Get.toNamed("/add_book");
         },
         child: const Icon(Icons.add_rounded),
       ),
@@ -48,33 +51,35 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class PageBody extends StatelessWidget {
+class PageBody extends StatefulWidget {
   final BookController bookController;
-  const PageBody({super.key, required this.bookController});
+
+  const PageBody({
+    super.key,
+    required this.bookController,
+  });
 
   @override
+  State<PageBody> createState() => _PageBodyState();
+}
+
+class _PageBodyState extends State<PageBody> {
+  @override
   Widget build(BuildContext context) {
-    bookController.fetchAllBooks();
+    widget.bookController.fetchAllBooks();
     return GetBuilder<BookController>(builder: (_) {
-      final bookStatus = bookController.bookStatus;
+      final bookStatus = widget.bookController.bookStatus;
 
       if (bookStatus == BookStatus.loading) return const LoadingBuilder();
-      if (bookStatus == BookStatus.failed && bookController.booksList.isEmpty) {
-        return ErrorBuilder(tryAgain: bookController.fetchAllBooks);
+      if (bookStatus == BookStatus.failed &&
+          widget.bookController.booksList.isEmpty) {
+        return const ErrorBuilder();
       }
 
       return Obx(() => Column(
             children: [
-              // TODO: favourites list
-              // Container(
-              //   color: AppColors.primary.withOpacity(.12),
-              //   padding: const EdgeInsets.symmetric(vertical: 20),
-              //   margin: const EdgeInsets.only(top: 20),
-              //   child: HorizontalBookListView(
-              //     title: "Favorit",
-              //     booksList: bookController.booksList,
-              //   ),
-              // ),
+              FavouritesSection(booksList: widget.bookController.booksList),
+
               // TODO: recents list
               // Padding(
               //   padding: const EdgeInsets.only(top: 20),
@@ -83,49 +88,53 @@ class PageBody extends StatelessWidget {
               //     booksList: bookController.booksList,
               //   ),
               // ),
-              // const SizedBox(height: 50),
-              AllBooksListView(booksList: bookController.booksList),
+              const SizedBox(height: 50),
+              AllBooksListView(
+                booksList: widget.bookController.booksList,
+                onBack: (value) => setState(() {}),
+              ),
             ],
           ));
     });
   }
 }
 
-class LoadingBuilder extends StatelessWidget {
-  const LoadingBuilder({super.key});
+class FavouritesSection extends StatefulWidget {
+  final List<BookModel> booksList;
+  const FavouritesSection({super.key, required this.booksList});
 
   @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: SizedBox(
-        height: 30,
-        width: 30,
-        child: CircularProgressIndicator(
-          color: AppColors.primary,
-        ),
-      ),
-    );
-  }
+  State<FavouritesSection> createState() => _FavouritesSectionState();
 }
 
-class ErrorBuilder extends StatelessWidget {
-  final Function() tryAgain;
-  const ErrorBuilder({super.key, required this.tryAgain});
+class _FavouritesSectionState extends State<FavouritesSection> {
+  List<int> _favouriteIds = [];
+  List<BookModel> get _favouriteBooks {
+    return widget.booksList
+        .where((book) => _favouriteIds.contains(book.id))
+        .toList();
+  }
+
+  void getFavouriteIds() async {
+    final prefs = await SharedPreferences.getInstance();
+    final rawIds = prefs.getStringList(PrefKeys.favouriteIds) ?? [];
+    final ids = rawIds.map((e) => int.tryParse(e) ?? -1).toList();
+    setState(() => _favouriteIds = ids);
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        children: [
-          const Padding(
-            padding: EdgeInsets.only(top: 70, bottom: 10),
-            child: Text("Gagal mengambil data buku"),
-          ),
-          FormButton(
-            onPressed: tryAgain,
-            text: "Coba lagi",
-          ),
-        ],
+    getFavouriteIds();
+    if (_favouriteBooks.isEmpty) return const SizedBox();
+
+    return Container(
+      color: AppColors.primary.withOpacity(.12),
+      padding: const EdgeInsets.symmetric(vertical: 20),
+      margin: const EdgeInsets.only(top: 20),
+      child: HorizontalBookListView(
+        title: "Favorit",
+        booksList: _favouriteBooks,
+        onBack: (value) => getFavouriteIds(),
       ),
     );
   }
@@ -178,11 +187,13 @@ class ProfilePicture extends StatelessWidget {
 class HorizontalBookListView extends StatelessWidget {
   final String title;
   final List<BookModel> booksList;
+  final Function(dynamic value) onBack;
 
   const HorizontalBookListView({
     super.key,
     required this.title,
     required this.booksList,
+    required this.onBack,
   });
 
   @override
@@ -213,6 +224,7 @@ class HorizontalBookListView extends StatelessWidget {
               final book = booksList[index];
               return BookTile(
                 model: book,
+                onBack: onBack,
               );
             },
           ),
@@ -224,7 +236,13 @@ class HorizontalBookListView extends StatelessWidget {
 
 class AllBooksListView extends StatelessWidget {
   final List<BookModel> booksList;
-  const AllBooksListView({super.key, required this.booksList});
+  final Function(dynamic value) onBack;
+
+  const AllBooksListView({
+    super.key,
+    required this.booksList,
+    required this.onBack,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -245,7 +263,10 @@ class AllBooksListView extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 80),
-          child: BooksListView(booksList: booksList),
+          child: BooksListView(
+            booksList: booksList,
+            onBack: onBack,
+          ),
         )
       ],
     );
