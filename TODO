@@ -35,8 +35,9 @@ Main Features:
   ✔ Favourites @high @started(23-12-31 09:16) @done(23-12-31 10:23) @lasted(1h7m55s)
   ✔ Recently Opened @high @started(23-12-31 10:40) @done(23-12-31 11:17) @lasted(37m7s)
   ☐ Search @high
-  ☐ Show Profile @high
+  ✔ Show Profile @high @started(23-12-31 12:05) @done(23-12-31 12:17) @lasted(12m36s)
   ✘ Edit Profile @cancelled(23-12-31 11:20)
+  ☐ Clear favourites and history on logout @high
 
   ☐ Pull to refresh @low
   ✘ Delete account @low @cancelled(23-12-31 11:17)

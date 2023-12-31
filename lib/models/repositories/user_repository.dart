@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'dart:io';
 
 import 'package:book_collector/models/services/user_service.dart';
+import 'package:book_collector/models/user_model.dart';
 import 'package:book_collector/models/utils/constants/dio_api.dart';
 import 'package:book_collector/utils/constants/pref_keys.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +16,7 @@ class UserRepository {
       final prefs = await SharedPreferences.getInstance();
 
       final token = response["token"];
-      log(token); // TODO: remove
+      log(token);
       DioApi.token = token;
       prefs.setString(PrefKeys.userToken, token);
     } on SocketException catch (e) {
@@ -44,6 +45,21 @@ class UserRepository {
   Future logout() async {
     try {
       await _userService.logoutUser();
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<UserModel> getProfile() async {
+    try {
+      final profile = await _userService.getProfile();
+      UserModel user = UserModel.fromJson(profile);
+      return user;
+    } on SocketException catch (e) {
+      log(e.message);
+      final message =
+          "Failed to connect to server: ${_userService.dio.options.baseUrl}";
+      throw SocketException(message);
     } catch (_) {
       rethrow;
     }

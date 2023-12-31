@@ -55,4 +55,17 @@ class UserService {
     log(response.toString());
     helper.handleExceptions(response.statusCode, jsonResponse["message"]);
   }
+
+  Future getProfile() async {
+    final dio = DioApi.dio;
+    const endpoint = "/user";
+    final response = await dio.get(endpoint);
+    final jsonResponse = response.data;
+
+    if (response.statusCode == 200) {
+      return jsonResponse;
+    }
+    log(response.toString());
+    helper.handleExceptions(response.statusCode, jsonResponse["message"]);
+  }
 }
