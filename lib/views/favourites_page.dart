@@ -28,8 +28,13 @@ class _FavouritesPageState extends State<FavouritesPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     getFavouriteIds();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -63,6 +68,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
               if (controller.bookStatus == BookStatus.failed) {
                 return const ErrorBuilder();
               }
+              print("AAAAAAAAAA");
               List<BookModel> favouriteBooks = controller.booksList
                   .where((book) => _favouriteIds.contains(book.id))
                   .toList();
@@ -74,7 +80,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
               }
               return BooksListView(
                 booksList: favouriteBooks,
-                onBack: (value) => setState(() {}),
+                onBack: (value) => getFavouriteIds(),
               );
             },
           )
