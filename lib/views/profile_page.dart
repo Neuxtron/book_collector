@@ -63,6 +63,11 @@ class ProfilePage extends StatelessWidget {
                 ),
               ),
               TextButton(
+                style: ButtonStyle(
+                  overlayColor: MaterialStatePropertyAll(
+                    AppColors.primary.withOpacity(.1),
+                  ),
+                ),
                 onPressed: () => handleLogout(controller),
                 child: const Text(
                   "Logout Akun",

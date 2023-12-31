@@ -90,6 +90,11 @@ class ActionButtons extends StatelessWidget {
         SizedBox(
           width: 100,
           child: TextButton(
+            style: ButtonStyle(
+              overlayColor: MaterialStatePropertyAll(
+                AppColors.primary.withOpacity(.1),
+              ),
+            ),
             onPressed: () {
               Get.back();
             },

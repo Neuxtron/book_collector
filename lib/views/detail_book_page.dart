@@ -129,6 +129,11 @@ class _DetailBookPageState extends State<DetailBookPage> {
             SizedBox(
               width: 100,
               child: TextButton(
+                style: ButtonStyle(
+                  overlayColor: MaterialStatePropertyAll(
+                    AppColors.primary.withOpacity(.1),
+                  ),
+                ),
                 onPressed: () {
                   if (_isEditing) {
                     setState(() => _isEditing = false);
