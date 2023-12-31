@@ -27,8 +27,13 @@ class _HistoryPageState extends State<HistoryPage> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     getRecentIds();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,7 +82,7 @@ class _HistoryPageState extends State<HistoryPage> {
               }
               return BooksListView(
                 booksList: recentBooks,
-                onBack: (value) => setState(() {}),
+                onBack: (value) => getRecentIds(),
               );
             },
           )

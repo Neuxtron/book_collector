@@ -108,11 +108,12 @@ class _DetailBookPageState extends State<DetailBookPage> {
 
   void updateHistory() async {
     final prefs = await SharedPreferences.getInstance();
-    final rawIds = prefs.getStringList(PrefKeys.favouriteIds) ?? [];
+    final rawIds = prefs.getStringList(PrefKeys.recentIds) ?? [];
     List<int> ids = rawIds.map((e) => int.tryParse(e) ?? -1).toList();
 
+    int id = widget.bookModel.id!;
     ids.removeWhere((id) => id == widget.bookModel.id);
-    ids.insert(0, widget.bookModel.id!);
+    ids.insert(0, id);
 
     final stringIds = ids.map((e) => e.toString()).toList();
     prefs.setStringList(PrefKeys.recentIds, stringIds);
