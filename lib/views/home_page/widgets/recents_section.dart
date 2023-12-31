@@ -31,8 +31,13 @@ class _RecentsSectionsState extends State<RecentsSections> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     getRecentIds();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     if (_recentBooks.isEmpty) return const SizedBox();
 
     return Padding(

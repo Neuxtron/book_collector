@@ -30,8 +30,13 @@ class _FavouritesSectionState extends State<FavouritesSection> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  void initState() {
+    super.initState();
     getFavouriteIds();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     if (_favouriteBooks.isEmpty) return const SizedBox();
 
     return Container(
