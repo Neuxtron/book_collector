@@ -14,6 +14,12 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  String _searchText = "";
+
+  void onSearch(value) {
+    setState(() => _searchText = value);
+  }
+
   @override
   Widget build(BuildContext context) {
     BookController controller = Get.find();
@@ -29,17 +35,22 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Padding(
-              padding: EdgeInsets.all(20),
+            Padding(
+              padding: const EdgeInsets.all(20),
               child: Row(
                 children: [
-                  SearchBooks(),
-                  SizedBox(width: 20),
-                  ProfilePicture(),
+                  SearchBooks(
+                    onChanged: onSearch,
+                  ),
+                  const SizedBox(width: 20),
+                  const ProfilePicture(),
                 ],
               ),
             ),
-            PageBody(bookController: controller),
+            PageBody(
+              bookController: controller,
+              searchText: _searchText,
+            ),
           ],
         ),
       ),

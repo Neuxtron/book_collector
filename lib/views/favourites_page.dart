@@ -62,6 +62,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
           const SizedBox(height: 30),
           Obx(
             () {
+              final booksList = controller.booksList;
               if (controller.bookStatus == BookStatus.loading) {
                 return const LoadingBuilder();
               }
@@ -70,7 +71,7 @@ class _FavouritesPageState extends State<FavouritesPage> {
               }
               List<BookModel> favouriteBooks = [];
               for (var id in _favouriteIds) {
-                final book = controller.booksList.firstWhereOrNull((book) {
+                final book = booksList.firstWhereOrNull((book) {
                   return book.id == id;
                 });
                 if (book != null) favouriteBooks.add(book);
