@@ -16,7 +16,7 @@ class BookTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
-        Get.to(DetailBookPage(bookModel: model));
+        Get.to(() => DetailBookPage(bookModel: model));
       },
       child: Container(
         height: 200,

@@ -96,4 +96,19 @@ class BookService {
     helper.handleExceptions(response.statusCode, jsonResponse["message"],
         responseBody: response.toString());
   }
+
+  Future deleteBookResponse(
+    int id,
+  ) async {
+    final dio = DioApi.dio;
+    final endpoint = "/books/$id";
+    final response = await dio.delete(endpoint);
+    final jsonResponse = response.data;
+
+    if (response.statusCode == 200) {
+      return jsonResponse;
+    }
+    helper.handleExceptions(response.statusCode, jsonResponse["message"],
+        responseBody: response.toString());
+  }
 }

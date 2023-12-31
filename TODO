@@ -30,7 +30,7 @@ Main Features:
   ✔ Get all books @critical @started(23-12-30 11:16) @done(23-12-30 12:50) @lasted(1h34m28s)
   ✔ Create a book @critical @started(23-12-30 13:52) @done(23-12-30 15:43) @lasted(1h51m10s)
   ✔ Edit a book @critical @started(23-12-30 15:48) @done(23-12-30 16:36) @lasted(48m30s)
-  ☐ Delete a book @critical
+  ✔ Delete a book @critical @started(23-12-31 07:40) @done(23-12-31 08:38) @lasted(58m15s)
 
   ☐ Favourites @high
   ☐ Recently Opened @high

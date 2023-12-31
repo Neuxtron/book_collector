@@ -74,4 +74,18 @@ class BookRepository {
       rethrow;
     }
   }
+
+  Future deleteBook(int id) async {
+    try {
+      await _bookService.deleteBookResponse(id);
+    } on SocketException catch (e) {
+      log(e.message);
+      final message =
+          "Failed to connect to server: ${DioApi.dio.options.baseUrl}";
+      throw SocketException(message);
+    } catch (e) {
+      log(e.toString());
+      rethrow;
+    }
+  }
 }

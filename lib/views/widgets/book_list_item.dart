@@ -20,7 +20,7 @@ class BookListItem extends StatelessWidget {
 
     return InkWell(
       onTap: () {
-        Get.to(DetailBookPage(bookModel: model));
+        Get.to(() => DetailBookPage(bookModel: model));
       },
       child: Container(
         height: 130,

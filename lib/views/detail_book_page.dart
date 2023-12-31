@@ -78,6 +78,7 @@ class _DetailBookPageState extends State<DetailBookPage> {
       try {
         await _controller.editBook(bookModel);
         Get.back();
+        _controller.fetchAllBooks();
       } on SocketException catch (_) {
         _scrollController.jumpTo(0);
         _errorType = "error";
@@ -210,6 +211,7 @@ class _DetailBookPageState extends State<DetailBookPage> {
                 onImageChanged: onImageChanged,
                 isEditing: _isEditing,
                 formKey: _formKey,
+                bookId: widget.bookModel.id!,
               ),
             ],
           ),
@@ -257,6 +259,7 @@ class EditBookForm extends StatefulWidget {
   final Function(String url) onImageChanged;
   final bool isEditing;
   final GlobalKey formKey;
+  final int bookId;
 
   const EditBookForm({
     super.key,
@@ -264,6 +267,7 @@ class EditBookForm extends StatefulWidget {
     required this.onImageChanged,
     required this.isEditing,
     required this.formKey,
+    required this.bookId,
   });
 
   @override
@@ -360,10 +364,146 @@ class _EditBookFormState extends State<EditBookForm> {
               readOnly: !widget.isEditing,
               required: false,
             ),
-            const SizedBox(height: 10),
+            DeleteButton(bookId: widget.bookId),
           ],
         ),
       ),
+    );
+  }
+}
+
+class DeleteButton extends StatelessWidget {
+  final int bookId;
+  const DeleteButton({super.key, required this.bookId});
+
+  void showDeleteDialog(context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return DeleteDialog(bookId: bookId);
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 30, bottom: 10),
+      child: TextButton(
+        style: ButtonStyle(
+          overlayColor: MaterialStatePropertyAll(
+            Colors.red.shade100,
+          ),
+          foregroundColor: const MaterialStatePropertyAll(Colors.red),
+        ),
+        onPressed: () => showDeleteDialog(context),
+        child: const Text("Hapus buku"),
+      ),
+    );
+  }
+}
+
+class DeleteDialog extends StatefulWidget {
+  final int bookId;
+  const DeleteDialog({super.key, required this.bookId});
+
+  @override
+  State<DeleteDialog> createState() => _DeleteDialogState();
+}
+
+class _DeleteDialogState extends State<DeleteDialog> {
+  BookController controller = BookController();
+  bool get _isFailed => controller.bookStatus == BookStatus.failed;
+  String _error = "";
+
+  void onDelete() async {
+    try {
+      await controller.deleteBook(widget.bookId);
+      Get.back();
+      controller.fetchAllBooks();
+    } on SocketException catch (_) {
+      setState(() => _error = "Gagal terhubung ke server");
+    } catch (e) {
+      setState(() => _error = "Terjadi kesalahan, silahkan coba lagi");
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      content: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          const Text(
+            "Apakah Anda ingi menghapus buku ini?",
+            textAlign: TextAlign.center,
+          ),
+          GetBuilder<BookController>(
+            builder: (_) {
+              if (controller.bookStatus == BookStatus.failed) {
+                return Padding(
+                  padding: const EdgeInsets.only(top: 30),
+                  child: Text(
+                    _error,
+                    style: const TextStyle(
+                      color: Colors.red,
+                      fontSize: 14,
+                    ),
+                  ),
+                );
+              }
+              return const SizedBox();
+            },
+          ),
+        ],
+      ),
+      contentPadding: const EdgeInsets.fromLTRB(20, 40, 20, 0),
+      actionsPadding: const EdgeInsets.all(20),
+      actions: [
+        DeleteActions(
+          onDelete: onDelete,
+        )
+      ],
+    );
+  }
+}
+
+class DeleteActions extends StatelessWidget {
+  final Function() onDelete;
+
+  const DeleteActions({
+    super.key,
+    required this.onDelete,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        TextButton(
+          style: ButtonStyle(
+            overlayColor: MaterialStatePropertyAll(
+              AppColors.primary.withOpacity(.1),
+            ),
+            foregroundColor: const MaterialStatePropertyAll(AppColors.primary),
+          ),
+          onPressed: () {
+            Get.back();
+          },
+          child: const Text("Batal"),
+        ),
+        GetBuilder<BookController>(builder: (_) {
+          return FormButton(
+            onPressed: onDelete,
+            text: "Hapus",
+            color: Colors.red,
+          );
+        })
+      ],
     );
   }
 }

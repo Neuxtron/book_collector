@@ -66,6 +66,7 @@ class _AddBookPageState extends State<AddBookPage> {
       try {
         await controller.createBook(bookModel);
         Get.back();
+        controller.fetchAllBooks();
       } on SocketException catch (_) {
         _scrollController.jumpTo(0);
         setState(() => _error = "Gagal terhubung ke server");

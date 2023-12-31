@@ -6,6 +6,7 @@ class FormButton extends StatelessWidget {
   final bool isLoading;
   final String text;
   final double? minWidth;
+  final Color color;
 
   const FormButton({
     super.key,
@@ -13,6 +14,7 @@ class FormButton extends StatelessWidget {
     required this.text,
     this.isLoading = false,
     this.minWidth,
+    this.color = AppColors.primary,
   });
 
   @override
@@ -20,8 +22,8 @@ class FormButton extends StatelessWidget {
     return MaterialButton(
       minWidth: minWidth,
       onPressed: !isLoading ? onPressed : null,
-      color: AppColors.primary,
-      disabledColor: AppColors.primary.withOpacity(.5),
+      color: color,
+      disabledColor: color.withOpacity(.5),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(7),
       ),

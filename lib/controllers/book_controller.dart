@@ -20,6 +20,7 @@ class BookController extends GetxController {
   }
 
   Future fetchAllBooks() async {
+    print("AAAAAAAAAA");
     try {
       final booksList = await _bookRepository.fetchAllBooks();
       _booksList.assignAll(booksList);
@@ -51,6 +52,20 @@ class BookController extends GetxController {
       _bookStatus = BookStatus.loading;
       update();
       await _bookRepository.editBook(model);
+      _bookStatus = BookStatus.normal;
+      update();
+    } catch (_) {
+      _bookStatus = BookStatus.failed;
+      update();
+      rethrow;
+    }
+  }
+
+  Future deleteBook(int id) async {
+    try {
+      _bookStatus = BookStatus.loading;
+      update();
+      await _bookRepository.deleteBook(id);
       _bookStatus = BookStatus.normal;
       update();
     } catch (_) {
