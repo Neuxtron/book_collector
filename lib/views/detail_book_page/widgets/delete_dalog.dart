@@ -16,7 +16,6 @@ class DeleteDialog extends StatefulWidget {
 
 class _DeleteDialogState extends State<DeleteDialog> {
   BookController controller = BookController();
-  bool get _isFailed => controller.bookStatus == BookStatus.failed;
   String _error = "";
 
   void onDelete() async {

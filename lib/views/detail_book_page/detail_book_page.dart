@@ -22,7 +22,7 @@ class DetailBookPage extends StatefulWidget {
 }
 
 class _DetailBookPageState extends State<DetailBookPage> {
-  BookController _controller = Get.find();
+  final BookController _controller = Get.find();
 
   final _descriptionController = TextEditingController();
   final _isbnController = TextEditingController();

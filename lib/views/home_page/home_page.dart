@@ -14,7 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  BookController _controller = Get.find();
+  final BookController _controller = Get.find();
   String _searchText = "";
 
   void onSearch(value) {

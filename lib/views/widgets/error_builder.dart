@@ -11,7 +11,7 @@ class ErrorBuilder extends StatefulWidget {
 }
 
 class _ErrorBuilderState extends State<ErrorBuilder> {
-  BookController _controller = Get.find();
+  final BookController _controller = Get.find();
   bool _isLoading = false;
 
   void retry() async {

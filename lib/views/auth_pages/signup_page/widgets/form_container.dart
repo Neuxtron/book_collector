@@ -28,7 +28,7 @@ class FormContainer extends StatelessWidget {
                   padding:
                       const EdgeInsets.symmetric(vertical: 40, horizontal: 30),
                   margin: const EdgeInsets.symmetric(horizontal: 15),
-                  child: Column(
+                  child: const Column(
                     children: [
                       Text(
                         "Daftar Akun Baru",
