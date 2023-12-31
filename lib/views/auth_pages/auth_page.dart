@@ -1,6 +1,6 @@
 import 'package:book_collector/models/utils/constants/dio_api.dart';
 import 'package:book_collector/utils/constants/pref_keys.dart';
-import 'package:book_collector/views/login_page.dart';
+import 'package:book_collector/views/auth_pages/login_page/login_page.dart';
 import 'package:book_collector/views/main_layout.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';

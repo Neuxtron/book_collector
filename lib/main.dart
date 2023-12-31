@@ -1,12 +1,12 @@
 import 'package:book_collector/utils/constants/app_colors.dart';
 import 'package:book_collector/utils/helpers/init_dependencies.dart';
 import 'package:book_collector/views/add_book_page.dart';
-import 'package:book_collector/views/auth_page.dart';
+import 'package:book_collector/views/auth_pages/auth_page.dart';
 import 'package:book_collector/views/edit_profile.dart';
-import 'package:book_collector/views/login_page.dart';
+import 'package:book_collector/views/auth_pages/login_page/login_page.dart';
 import 'package:book_collector/views/main_layout.dart';
 import 'package:book_collector/views/profile_page.dart';
-import 'package:book_collector/views/signup_page.dart';
+import 'package:book_collector/views/auth_pages/signup_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
