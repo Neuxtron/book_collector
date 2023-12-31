@@ -1,6 +1,7 @@
 import 'package:book_collector/models/book_model.dart';
 import 'package:book_collector/utils/constants/pref_keys.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'horizontal_books_list_view.dart';
@@ -16,11 +17,14 @@ class RecentsSections extends StatefulWidget {
 class _RecentsSectionsState extends State<RecentsSections> {
   List<int> _recentIds = [];
   List<BookModel> get _recentBooks {
-    return _recentIds.map((id) {
-      return widget.booksList.firstWhere((book) {
+    List<BookModel> recentBooks = [];
+    for (var id in _recentIds) {
+      final book = widget.booksList.firstWhereOrNull((book) {
         return book.id == id;
       });
-    }).toList();
+      if (book != null) recentBooks.add(book);
+    }
+    return recentBooks;
   }
 
   void getRecentIds() async {

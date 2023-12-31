@@ -69,11 +69,13 @@ class _HistoryPageState extends State<HistoryPage> {
               if (controller.bookStatus == BookStatus.failed) {
                 return const ErrorBuilder();
               }
-              List<BookModel> recentBooks = _recentIds.map((id) {
-                return booksList.firstWhere((book) {
+              List<BookModel> recentBooks = [];
+              for (var id in _recentIds) {
+                final book = booksList.firstWhereOrNull((book) {
                   return book.id == id;
                 });
-              }).toList();
+                if (book != null) recentBooks.add(book);
+              }
 
               if (recentBooks.isEmpty) {
                 return const Center(

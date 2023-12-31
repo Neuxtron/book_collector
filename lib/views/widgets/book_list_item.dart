@@ -1,6 +1,6 @@
 import 'package:book_collector/models/book_model.dart';
 import 'package:book_collector/utils/constants/app_colors.dart';
-import 'package:book_collector/views/detail_book_page.dart';
+import 'package:book_collector/views/detail_book_page/detail_book_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';

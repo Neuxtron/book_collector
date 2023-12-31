@@ -2,6 +2,7 @@ import 'package:book_collector/models/book_model.dart';
 import 'package:book_collector/utils/constants/app_colors.dart';
 import 'package:book_collector/utils/constants/pref_keys.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'horizontal_books_list_view.dart';
@@ -17,9 +18,14 @@ class FavouritesSection extends StatefulWidget {
 class _FavouritesSectionState extends State<FavouritesSection> {
   List<int> _favouriteIds = [];
   List<BookModel> get _favouriteBooks {
-    return widget.booksList
-        .where((book) => _favouriteIds.contains(book.id))
-        .toList();
+    List<BookModel> favouriteBooks = [];
+    for (var id in _favouriteIds) {
+      final book = widget.booksList.firstWhereOrNull((book) {
+        return book.id == id;
+      });
+      if (book != null) favouriteBooks.add(book);
+    }
+    return favouriteBooks;
   }
 
   void getFavouriteIds() async {

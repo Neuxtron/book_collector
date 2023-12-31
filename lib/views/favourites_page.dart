@@ -68,9 +68,13 @@ class _FavouritesPageState extends State<FavouritesPage> {
               if (controller.bookStatus == BookStatus.failed) {
                 return const ErrorBuilder();
               }
-              List<BookModel> favouriteBooks = controller.booksList
-                  .where((book) => _favouriteIds.contains(book.id))
-                  .toList();
+              List<BookModel> favouriteBooks = [];
+              for (var id in _favouriteIds) {
+                final book = controller.booksList.firstWhereOrNull((book) {
+                  return book.id == id;
+                });
+                if (book != null) favouriteBooks.add(book);
+              }
 
               if (favouriteBooks.isEmpty) {
                 return const Center(
