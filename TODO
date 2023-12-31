@@ -33,11 +33,13 @@ Main Features:
   ✔ Delete a book @critical @started(23-12-31 07:40) @done(23-12-31 08:38) @lasted(58m15s)
 
   ✔ Favourites @high @started(23-12-31 09:16) @done(23-12-31 10:23) @lasted(1h7m55s)
-  ☐ Recently Opened @high
+  ✔ Recently Opened @high @started(23-12-31 10:40) @done(23-12-31 11:17) @lasted(37m7s)
   ☐ Search @high
+  ☐ Show Profile
+  ☐ Edit Profile
 
   ☐ Pull to refresh @low
-  ☐ Delete account @low
+  ✘ Delete account @low @cancelled(23-12-31 11:17)
 
 Misc:
   ☐ Dispose all controllers @low

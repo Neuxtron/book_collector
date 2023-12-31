@@ -106,10 +106,23 @@ class _DetailBookPageState extends State<DetailBookPage> {
     _imgUrl = _imageController.text;
   }
 
+  void updateHistory() async {
+    final prefs = await SharedPreferences.getInstance();
+    final rawIds = prefs.getStringList(PrefKeys.favouriteIds) ?? [];
+    List<int> ids = rawIds.map((e) => int.tryParse(e) ?? -1).toList();
+
+    ids.removeWhere((id) => id == widget.bookModel.id);
+    ids.insert(0, widget.bookModel.id!);
+
+    final stringIds = ids.map((e) => e.toString()).toList();
+    prefs.setStringList(PrefKeys.recentIds, stringIds);
+  }
+
   @override
   void initState() {
     super.initState();
     setControllerTexts();
+    updateHistory();
   }
 
   @override

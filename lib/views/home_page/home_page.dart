@@ -79,15 +79,7 @@ class _PageBodyState extends State<PageBody> {
       return Obx(() => Column(
             children: [
               FavouritesSection(booksList: widget.bookController.booksList),
-
-              // TODO: recents list
-              // Padding(
-              //   padding: const EdgeInsets.only(top: 20),
-              //   child: HorizontalBookListView(
-              //     title: "Terakhir Dilihat",
-              //     booksList: bookController.booksList,
-              //   ),
-              // ),
+              RecentsSections(booksList: widget.bookController.booksList),
               const SizedBox(height: 50),
               AllBooksListView(
                 booksList: widget.bookController.booksList,
@@ -135,6 +127,47 @@ class _FavouritesSectionState extends State<FavouritesSection> {
         title: "Favorit",
         booksList: _favouriteBooks,
         onBack: (value) => getFavouriteIds(),
+      ),
+    );
+  }
+}
+
+class RecentsSections extends StatefulWidget {
+  final List<BookModel> booksList;
+  const RecentsSections({super.key, required this.booksList});
+
+  @override
+  State<RecentsSections> createState() => _RecentsSectionsState();
+}
+
+class _RecentsSectionsState extends State<RecentsSections> {
+  List<int> _recentIds = [];
+  List<BookModel> get _recentBooks {
+    return _recentIds.map((id) {
+      return widget.booksList.firstWhere((book) {
+        return book.id == id;
+      });
+    }).toList();
+  }
+
+  void getRecentIds() async {
+    final prefs = await SharedPreferences.getInstance();
+    final rawIds = prefs.getStringList(PrefKeys.recentIds) ?? [];
+    final ids = rawIds.map((e) => int.tryParse(e) ?? -1).toList();
+    setState(() => _recentIds = ids);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    getRecentIds();
+    if (_recentBooks.isEmpty) return const SizedBox();
+
+    return Padding(
+      padding: const EdgeInsets.only(top: 20),
+      child: HorizontalBookListView(
+        title: "Terakhir Dilihat",
+        booksList: _recentBooks,
+        onBack: (value) => getRecentIds(),
       ),
     );
   }
