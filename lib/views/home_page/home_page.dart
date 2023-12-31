@@ -14,6 +14,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  BookController _controller = Get.find();
   String _searchText = "";
 
   void onSearch(value) {
@@ -22,8 +23,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    BookController controller = Get.find();
-
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -48,7 +47,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             PageBody(
-              bookController: controller,
+              bookController: _controller,
               searchText: _searchText,
             ),
           ],

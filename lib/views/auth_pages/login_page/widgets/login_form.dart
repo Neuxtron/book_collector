@@ -42,6 +42,14 @@ class _LoginFormState extends State<LoginForm> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+    controller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [

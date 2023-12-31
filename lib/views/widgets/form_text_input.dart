@@ -23,14 +23,15 @@ class FormTextInput extends StatelessWidget {
         controller: controller,
         keyboardType: keyboardType,
         obscureText: isObscure,
-        style: TextStyle(fontSize: 14),
+        style: const TextStyle(fontSize: 14),
         cursorColor: AppColors.primary,
         decoration: InputDecoration(
           hintText: hintText,
           filled: true,
           fillColor: AppColors.inputBackground,
           isCollapsed: true,
-          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+          contentPadding:
+              const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
           enabledBorder: buildBorder(),
           focusedBorder: buildBorder(),
         ),
@@ -41,7 +42,7 @@ class FormTextInput extends StatelessWidget {
   InputBorder buildBorder() {
     return OutlineInputBorder(
         borderRadius: BorderRadius.circular(100),
-        borderSide: BorderSide(
+        borderSide: const BorderSide(
           color: Colors.grey,
         ));
   }

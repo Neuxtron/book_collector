@@ -1,4 +1,3 @@
-import 'package:book_collector/controllers/book_controller.dart';
 import 'package:book_collector/utils/constants/app_colors.dart';
 import 'package:book_collector/views/widgets/form_button.dart';
 import 'package:flutter/material.dart';
@@ -31,13 +30,11 @@ class DeleteActions extends StatelessWidget {
           },
           child: const Text("Batal"),
         ),
-        GetBuilder<BookController>(builder: (_) {
-          return FormButton(
-            onPressed: onDelete,
-            text: "Hapus",
-            color: Colors.red,
-          );
-        })
+        FormButton(
+          onPressed: onDelete,
+          text: "Hapus",
+          color: Colors.red,
+        )
       ],
     );
   }

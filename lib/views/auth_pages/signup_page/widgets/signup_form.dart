@@ -56,6 +56,15 @@ class _SignupFormState extends State<SignupForm> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _nameController.dispose();
+    _passwordController.dispose();
+    _rPasswordController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [

@@ -129,6 +129,21 @@ class _DetailBookPageState extends State<DetailBookPage> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    _descriptionController.dispose();
+    _isbnController.dispose();
+    _titleController.dispose();
+    _seriesController.dispose();
+    _authorController.dispose();
+    _publishedDateController.dispose();
+    _publisherController.dispose();
+    _pageCountController.dispose();
+    _imageController.dispose();
+    _scrollController.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: ActionButtons(
