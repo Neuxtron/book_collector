@@ -40,4 +40,5 @@ Main Features:
   ☐ Delete account @low
 
 Misc:
-  ☐ Dispose all controllers @critical
+  ☐ Dispose all controllers @low
+  ☐ Pagination @low
