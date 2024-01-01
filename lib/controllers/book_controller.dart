@@ -119,6 +119,12 @@ class BookController extends GetxController {
     updateFavouriteBooks();
     updateRecentBooks();
   }
+
+  void disposeBooks() {
+    _booksList.clear();
+    _favouriteBooks.clear();
+    _recentBooks.clear();
+  }
 }
 
 enum BookStatus { normal, loading, failed }

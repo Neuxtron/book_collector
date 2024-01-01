@@ -1,3 +1,4 @@
+import 'package:book_collector/controllers/book_controller.dart';
 import 'package:book_collector/controllers/user_controller.dart';
 import 'package:book_collector/utils/constants/app_colors.dart';
 import 'package:book_collector/utils/constants/pref_keys.dart';
@@ -9,9 +10,13 @@ import 'package:shared_preferences/shared_preferences.dart';
 class ProfilePage extends StatelessWidget {
   const ProfilePage({super.key});
 
-  void handleLogout(UserController controller) async {
+  void handleLogout(
+    UserController controller,
+    BookController bookController,
+  ) async {
     final prefs = await SharedPreferences.getInstance();
     controller.logout();
+    bookController.disposeBooks();
     prefs.setString(PrefKeys.userToken, "");
     prefs.setStringList(PrefKeys.favouriteIds, []);
     prefs.setStringList(PrefKeys.recentIds, []);
@@ -21,6 +26,7 @@ class ProfilePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     UserController controller = Get.find();
+    BookController bookController = Get.find();
     controller.getProfile();
 
     return Scaffold(
@@ -82,7 +88,7 @@ class ProfilePage extends StatelessWidget {
                         AppColors.primary.withOpacity(.1),
                       ),
                     ),
-                    onPressed: () => handleLogout(controller),
+                    onPressed: () => handleLogout(controller, bookController),
                     child: const Text(
                       "Logout Akun",
                       style: TextStyle(

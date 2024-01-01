@@ -46,7 +46,6 @@ class _LoginFormState extends State<LoginForm> {
     super.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    controller.dispose();
   }
 
   @override
